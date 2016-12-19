@@ -137,9 +137,9 @@ class SendClockUpdatedData extends Job implements ShouldQueue
                 "month" => $this->get_month_regions()
             ],
             "beneficiaries" => [
-                "total" => $this->get_total_beneficiaries(),
-                "active" => $this->get_active_beneficiaries(),
-                "inactive" => $this->get_inactive_beneficiaries()
+                "total" => $this->get_total_active_beneficiaries(),
+                "valid" => $this->get_valid_beneficiaries(),
+                "invalid" => $this->get_invalid_beneficiaries()
             ]
         ];
     }
@@ -147,15 +147,7 @@ class SendClockUpdatedData extends Job implements ShouldQueue
     /**
      * @return int
      */
-    private function get_total_beneficiaries()
-    {
-        return Country::first()->beneficiaries->count();
-    }
-
-    /**
-     * @return mixed
-     */
-    private function get_active_beneficiaries()
+    private function get_total_active_beneficiaries()
     {
         return Country::first()->beneficiaries->where('active', 1)->count();
     }
@@ -163,8 +155,16 @@ class SendClockUpdatedData extends Job implements ShouldQueue
     /**
      * @return mixed
      */
-    private function get_inactive_beneficiaries()
+    private function get_valid_beneficiaries()
     {
-        return Country::first()->beneficiaries->where('active', 0)->count();
+        return Country::first()->beneficiaries->where('valid', 1)->where('active', 1)->count();
+    }
+
+    /**
+     * @return mixed
+     */
+    private function get_invalid_beneficiaries()
+    {
+        return Country::first()->beneficiaries->where('valid', 0)->where('active', 1)->count();
     }
 }

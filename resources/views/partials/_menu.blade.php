@@ -1,6 +1,6 @@
 <nav id="menu"  data-search="close" style="background: #29166f; color: white;">
     <ul>
-        @if(collect([1])->contains(auth()->user()->role->id))
+        @if(collect([1, 8])->contains(auth()->user()->role->id))
             <li class="{{ Request::is('dashboard') || Request::is('dashboard/*') ? "mm-selected" :  '' }} ">
                 <a href="{!! route('dashboard') !!}"><i style="color: white;" class="icon  fa fa-laptop"></i> Dashboard </a>
             </li>
@@ -42,9 +42,9 @@
             </li>
         @endif
 
-        @if(collect([1])->contains(auth()->user()->role->id))
+        @if(collect([1, 2])->contains(auth()->user()->role->id))
             <li class="{{ Request::is('employment') || Request::is('employment/*') ? "mm-selected":  '' }} ">
-                <a href="{!! route('employment.index') !!}"><i style="color: white;" class="icon  fa fa-paperclip"></i> Employment Form</a>
+                <a href="{!! route('employment.index') !!}"><i style="color: white;" class="icon  fa fa-paperclip"></i> Enrolment Form</a>
             </li>
         @endif
 

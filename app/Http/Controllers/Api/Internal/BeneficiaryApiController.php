@@ -122,9 +122,21 @@ class BeneficiaryApiController extends Controller
      * @param $uuid
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete($uuid)
+    public function deactivate($uuid)
     {
         $updated = $this->beneficiaryRepository->deactivate($uuid);
+        $updated = $this->manager->createData(new Item($updated, new BeneficiaryCollectionTransformer(false)))
+            ->toArray();
+        return response()->json($updated["data"]);
+    }
+
+    /**
+     * @param $uuid
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function activate($uuid)
+    {
+        $updated = $this->beneficiaryRepository->activate($uuid);
         $updated = $this->manager->createData(new Item($updated, new BeneficiaryCollectionTransformer(false)))
             ->toArray();
         return response()->json($updated["data"]);
@@ -152,7 +164,8 @@ class BeneficiaryApiController extends Controller
         $this->beneficiaryRepository->add([
             "uuid" => $uuid,
             "form_id" => $form->id,
-            "bid" => $bid
+            "bid" => $bid,
+            "valid" => 1
         ]);
         return $uuid;
     }
@@ -167,7 +180,7 @@ class BeneficiaryApiController extends Controller
         $bid = Config::getInitials() . self::get_new_bid(1);
         $beneficiary->update([
             'bid' => $bid,
-            'active' => 1
+            'valid' => 1
         ]);
         return $bid;
     }

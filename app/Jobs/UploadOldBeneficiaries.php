@@ -54,7 +54,6 @@ class UploadOldBeneficiaries extends Job implements ShouldQueue
                     "phone_number" => $row->phone,
                     "surname" => $this->get_surname($row->staffname),
                     "forenames" => $this->get_forenames($row->staffname),
-                    "active" => false,
                     "uuid" => CodeGenerator::uuid()
                 ];
             })

@@ -17,7 +17,7 @@ class EmploymentFormMiddleware
     {
         $role_id = auth()->user()->role->id;
         if(
-        !collect([1, 8])->contains($role_id)
+        !collect([1, 2])->contains($role_id)
         ){
             if($request->ajax() || $request->wantsJson()){
                 return response('Unauthorized.', 401);

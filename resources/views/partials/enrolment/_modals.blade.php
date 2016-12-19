@@ -9,7 +9,7 @@
                 <label class="control-label">BID</label>
                 <div>
                     <div class="input-group"> <span class="input-group-addon">ZGH</span>
-                        <input v-model="bid" required type="text" data-mask="9999999" class="form-control">
+                        <input v-model="bid" required type="text" data-mask="9999999" class="form-control" @keyup.enter="checkBid">
                     </div>
                     <span style="color: #29166f;" class="help-block"><i class="fa fa-info"></i> Just the numeric part of the BID</span>
                 </div>

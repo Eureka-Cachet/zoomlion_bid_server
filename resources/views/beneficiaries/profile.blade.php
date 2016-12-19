@@ -47,7 +47,8 @@
                                                                         <h3>Personal Information</h3>
                                                                 </div>
                                                                 <div class="col-xs-6 text-right">
-                                                                        <button @click="deactiveBeneficiary" type="button" class="btn btn-theme"> Deactive</button>
+                                                                        <button v-if="beneficiary.active" @click="deactiveBeneficiary" type="button" class="btn btn-theme"> Deactivate</button>
+                                                                        <button v-else @click="activeBeneficiary" type="button" class="btn btn-success"> Active</button>
                                                                 </div>
                                                         </div>
                                                     <hr>

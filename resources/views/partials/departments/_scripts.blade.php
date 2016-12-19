@@ -3,8 +3,13 @@
 <script type="text/javascript">
     $(function(){
 
-        Vue.config.debug = false;
-        Vue.config.silent = true;
+        var role_id = "{{ auth()->user()->role->id }}";
+
+        var sysAdmin = Number.parseInt(role_id) === 1;
+
+        // Vue.config.debug = false;
+        // Vue.config.silent = true;
+
 
         Vue.component('v-select', VueSelect.VueSelect);
 
@@ -23,12 +28,6 @@
                 $staffPanel = $('#staff');
 
         var departmentsFields = [
-                    // {
-                    //     title: 'Code',
-                    //     name: 'code',
-                    //     sortField: 'code',
-                    //     dataClass: 'text-center'
-                    // },
                     {
                         title: 'Module',
                         name: 'department.name',
@@ -48,7 +47,7 @@
                 },
                     {
                         title: 'Actions',
-                        name: '__actions',
+                        name: '__component:departmentActions',
                         dataClass: 'text-center'
                     }
                 ],
@@ -86,20 +85,75 @@
                     { name: 'view-clocking', label: '', icon: 'fa fa-eye', class: 'btn btn-xs'}
                 ];
 
+        Vue.component('departmentActions', {
+                template: [
+                    '<div>',
+                        '<button v-cloak class="btn btn-xs" @click="itemAction(\'view-staff\', rowData)"><i class="fa fa-users"></i></button>',
+                        '<button v-cloak class="btn btn-xs" v-if="sysAdmin" @click="itemAction(\'delete-module\', rowData)"><i class="fa fa-trash-o"></i></button>',
+                    '</div>'
+                ].join(''),
+
+                props: {
+                    rowData: {
+                        type: Object,
+                        required: true
+                    }
+                },
+                data: function(){
+                    return {
+                        sysAdmin: sysAdmin
+                    };
+                },
+                methods: {
+                    itemAction: function(action, department) {
+                        switch(action){
+                            case 'view-staff':
+                                this.viewStaffIn(department);
+                                break;
+                            case 'delete-module':
+                                this.deleteModule(department);
+                                break;
+                        }
+                    },
+                    viewStaffIn: function(department){
+                        this.$dispatch('selected:department', department);
+                    },
+                    deleteModule: function(module){
+                        $.confirm({
+                            title: 'Are You Sure?',
+                            content: false,
+                            confirm: function(){
+                                var url = "internal-api/departments/"+module.id;
+                                this.$http.delete(url, {'_token': "{!! csrf_token() !!}"}).then(
+                                        function(res){
+                                            if(res.data.success){
+                                                this.resetFilter();
+                                                this.notify("Deleted Successfully", 'success');
+                                                return false;
+                                            }
+                                            this.notify("Could not Delete the Module", 'danger');
+                                        },function(res){
+                                            this.notify("Could not Delete the Module", 'danger');
+                                        }
+                                )
+                            }.bind(this),
+                            confirmButton: 'Yes',
+                            cancelButton: 'NO',
+                            confirmButtonClass: 'btn-warning',
+                            cancelButtonClass: 'btn-success'
+                        });
+                    } 
+                }
+            });
+
+        
+        
         var mixins = {
             methods: {
-                setFilter: function() {
-                    console.log(this.searchFor);
-                    this.moreParams = [
-                        'filter=' + this.searchFor
-                    ];
-                    this.$nextTick(function() {
-                        this.$broadcast('vuetable:refresh')
-                    });
-                },
-                resetFilter: function() {
-                    this.searchFor = '';
-                    this.setFilter();
+                reloadTable: function(){
+                    this.$nextTick(function(){
+                        this.$broadcast('vuetable:reload')
+                    })
                 },
                 notify: function(message, status){
                     $.notific8(
@@ -130,7 +184,7 @@
                 departmentUrl: function(){
                     if(!_.isEmpty(this.selectedLocation)){
                         url = 'internal-api/locations/' + this.selectedLocation.id + '/modules';
-                        this.resetFilter();
+                        this.reloadTable();
                         return url;
                     }else{
                         return '';
@@ -147,7 +201,6 @@
                         direction: 'asc'
                     }],
                     departmentFields: departmentsFields,
-                    departmentActions: departmentActions,
                     moreParams: []
                 }
             },
@@ -229,33 +282,31 @@
         });
 
 
-        Vue.component('vuetable-staff', {
-            template: "#vuetable-staff",
-            // mixins: [mixins],
-            data: function(){
-                return {
-                    searchFor: '',
-                    paginationInfoTemplate: '???? {from} ??? {to} ?????????? {total} ??????',
-                    sortOrder: [{
-                        field: 'full_name',
-                        direction: 'asc'
-                    }],
-                    staffFields: staffFields,
-                    staffActions: staffActions,
-                    moreParams: [],
-                    selectedDepartment: {}
-                }
-            },
+        Vue.component('vuetable-beneficiaries', {
+            template: "#vuetable-beneficiaries",
+            mixins: [mixins],
             computed: {
-                staffUrl: function(){
+                beneficiariesUrl: function(){
                     if(!_.isEmpty(this.selectedDepartment)){
-                        var url = 'internal-api/departments/' + this.selectedDepartment.id + '/staff';
-                        this.resetFilter();
+                        url = 'internal-api/departments/' + this.selectedDepartment.id + '/staff';
+                        this.reset();
                         return url;
                     }else{
                         return '';
                     }
                 }
+            },
+            data: function(){
+                return {
+                    beneficiaries: [],
+                    selectedBeneficiary: null,
+                    paginationInfoTemplate: '???? {from} ??? {to} ?????????? {total} ??????',
+                    searchFor: '',
+                    sortOrder: [],
+                    beneficiariesFields: staffFields,
+                    selectedDepartment: null,
+                    moreParams: []
+                };
             },
             methods: {
                 viewClockingFor: function(beneficiary){
@@ -264,19 +315,23 @@
                 totalClock: function(clocks){
                     return clocks.length;
                 },
-                setFilter: function() {
-                    console.log(this.searchFor);
+                search: function(){
                     this.moreParams = [
                         'filter=' + this.searchFor
                     ];
                     this.$nextTick(function() {
                         this.$broadcast('vuetable:refresh')
-                    });                    
+                    });
                 },
-                resetFilter: function() {
+                reset: function(){
                     this.searchFor = '';
-                    this.setFilter();
-                },
+                    this.moreParams = [
+                        'filter='
+                    ];
+                    this.$nextTick(function() {
+                        this.$broadcast('vuetable:refresh')
+                    });
+                }
             },
             events: {
                 'vuetable:action': function(action, staff){
@@ -294,10 +349,8 @@
                 'load:staff-in': function(department){
                     this.$set('selectedDepartment', department);
                 }
-            },
-            ready: function(){}
+            }
         });
-
 
         new Vue({
             el: "#main-content",

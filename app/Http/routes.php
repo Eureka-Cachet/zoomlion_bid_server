@@ -106,7 +106,8 @@ Route::group(['prefix' => 'internal-api','namespace' => 'Api\Internal', 'middlew
     Route::get('/beneficiaries', ['as' => 'api.beneficiary.all', 'uses' => 'BeneficiaryApiController@all']);
     Route::post('/beneficiaries', ['as' => 'api.beneficiary.new', 'uses' => 'BeneficiaryApiController@add']);
     Route::get('/beneficiaries/{id}', ['as' => 'api.beneficiary.single', 'uses' => 'BeneficiaryApiController@single']);
-    Route::delete('/beneficiaries/{id}', ['as' => 'api.beneficiary.delete', 'uses' => 'BeneficiaryApiController@delete']);
+    Route::post('/beneficiaries/{id}/activate', ['as' => 'api.beneficiary.activate', 'uses' => 'BeneficiaryApiController@activate']);
+    Route::post('/beneficiaries/{id}/deactivate', ['as' => 'api.beneficiary.deactivate', 'uses' => 'BeneficiaryApiController@deactivate']);
     Route::post('/beneficiaries/{id}', ['as' => 'api.beneficiary.update', 'uses' => 'BeneficiaryApiController@update']);
 
     Route::get('/devices', ['as' => 'api.devices.all', 'uses' => 'DeviceApiController@all']);

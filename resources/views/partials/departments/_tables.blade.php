@@ -40,17 +40,16 @@
     </div>
 </template>
 
-<template id="vuetable-staff">
+<template id="vuetable-beneficiaries">
     <div class="panel-tools" align="left">
-        <div class="form-inline form-group">
+        <div class="">
             <div class="input-group col-xs-12">
-                <input v-model="searchFor" placeholder="search ..."
-                        class="form-control input-sm"
-                        @keyup.enter="setFilter">
+                <input v-model="searchFor" placeholder="search ..." @keyup.enter="search"
+                        class="form-control input-sm">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-sm" @click="setFilter"
+                                    <button class="btn btn-sm" @click="search"
                                     type="button"><i class="fa fa-search"></i></button>
-                                    <button class="btn btn-sm" @click="resetFilter"
+                                    <button class="btn btn-sm" @click="reset"
                                     type="button"><i class="fa fa-times"></i></button>
                                 </span>
             </div>
@@ -59,18 +58,18 @@
     <div class="panel-body">
         <div class="table-responsive">
             <vuetable
-                    :api-url="staffUrl"
+                    :api-url="beneficiariesUrl"
                     pagination-path=""
-                    :fields="staffFields"
+                    :fields="beneficiariesFields"
                     :sort-order="sortOrder"
                     table-class="table table-bordered table-striped table-hover"
-                    ascending-icon="fa fa-sort-up"
-                    descending-icon="fa fa-sort-down"
+                    ascending-icon="glyphicon glyphicon-chevron-up"
+                    descending-icon="glyphicon glyphicon-chevron-down"
                     pagination-class=""
                     pagination-info-class=""
                     pagination-component-class=""
                     pagination-component="vuetable-pagination-bootstrap"
-                    :item-actions="staffActions"
+                    :item-actions="beneficiariesActions"
                     :append-params="moreParams"
                     ></vuetable>
         </div>

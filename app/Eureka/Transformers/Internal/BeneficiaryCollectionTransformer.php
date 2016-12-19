@@ -49,7 +49,8 @@ class BeneficiaryCollectionTransformer extends TransformerAbstract
             'address' => $beneficiary->address,
             'bid' => $beneficiary->bid,
             'form' => $this->get_form($beneficiary),
-            'status' => $beneficiary->active,
+            'status' => !!$beneficiary->valid,
+            'active' => !!$beneficiary->active,
             'region' => $beneficiary->region,
             'district' => $beneficiary->district,
             'location' => $beneficiary->location,
@@ -80,7 +81,8 @@ class BeneficiaryCollectionTransformer extends TransformerAbstract
         return [
             'uuid' => $beneficiary->uuid,
             'bid' => $beneficiary->form ? $beneficiary->form->code : $beneficiary->bid,
-            'status' => !!$beneficiary->active ,
+            'status' => !!$beneficiary->valid ,
+            'active' => !!$beneficiary->active,
             'module' => $module ? strtoupper($module->department->name) : "Not Available",
             'full_name' => strtoupper($beneficiary->full_name)
         ];

@@ -40,7 +40,7 @@
                                 <h4><b v-cloak>@{{ selectedLocation }}</b></h4>
                             </div>
                         </header>
-                        <vuetable-staff></vuetable-staff>
+                        <vuetable-Beneficiaries></vuetable-Beneficiaries>
                     </section>
                 </div>
 

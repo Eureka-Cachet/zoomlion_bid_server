@@ -215,6 +215,36 @@
                     this.$http.get(url).then(function(resp){
                         this.ranks = resp.data
                     })
+                },
+                activateBeneficiary: function(){
+                    $profilePanel.LoadingOverlay('show', loadingOptions);
+                    var url = "activate";
+                    this.$http.post(url, {"_token": "{{ csrf_token() }}"})
+                        .then(function(resp){
+                            if(resp.status === 200){
+                                this.notify("Beneficiary Activation Was Successful", "success", false);
+                                this.beneficiary.active = resp.data.active;
+                                return $profilePanel.LoadingOverlay('hide', true);
+                            }
+                        }, function(error){
+                            this.notify("Beneficiary Activation Failed", "danger", true);
+                            $profilePanel.LoadingOverlay('hide', true);
+                        })
+                },
+                deactivateBeneficiary: function(){
+                    $profilePanel.LoadingOverlay('show', loadingOptions);
+                    var url = "deactivate";
+                    this.$http.post(url, {"_token": "{{ csrf_token() }}"})
+                        .then(function(resp){
+                            if(resp.status === 200){
+                                this.notify("Beneficiary Deactivation Was Successful", "success", false);
+                                this.beneficiary.active = resp.data.active;
+                                return $profilePanel.LoadingOverlay('hide', true);
+                            }
+                        }, function(error){
+                            this.notify("Beneficiary Activation Failed", "danger", true);
+                            $profilePanel.LoadingOverlay('hide', true);
+                        })
                 }
             },
             created: function(){

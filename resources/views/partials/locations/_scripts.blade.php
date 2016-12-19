@@ -51,7 +51,6 @@
 
         Vue.component('vuetable-pagination-bootstrap', {
             template: '#vuetable-pagination-bootstrap-template',
-            // mixins: [paginationMixin],
             methods: {
                 loadPage: function(page) {
                     this.$dispatch('vuetable-pagination:change-page', page)
@@ -64,7 +63,6 @@
         var mixins = {
             methods: {
                 setFilter: function() {
-                    console.log(this.searchFor);
                     this.moreParams = [
                         'filter=' + this.searchFor
                     ];
@@ -81,10 +79,6 @@
                         this.$broadcast('vuetable:reload')
                     })
                 },
-                // reload: function(what, literal){
-                //     // this.selectedRegion = region;
-                //     // this.resetFilter();
-                // },
                 onFailedNotify: function(item){
                     var data = {message: item + ' could not be updated.', status: 'danger'};
                     this.$dispatch('notify:event', data);

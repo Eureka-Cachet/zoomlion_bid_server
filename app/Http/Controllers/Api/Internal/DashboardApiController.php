@@ -87,14 +87,14 @@ class DashboardApiController extends Controller
     public function beneficiaries()
     {
         $total = Beneficiary::all()->count();
-        $active = Beneficiary::all()->where('active', 1)->count();
-        $inactive = Beneficiary::all()->where('active', 0)->count();
+        $valid = Beneficiary::where(['valid' => 1, 'active' => 1])->count();
+        $invalid = Beneficiary::where(['valid' => 0, 'active' => 1])->count();
 
         return response()->json(
             [
                 'total' => $total,
-                'active' => $active,
-                'inactive' => $inactive
+                'valid' => $valid,
+                'invalid' => $invalid
             ]
         );
     }

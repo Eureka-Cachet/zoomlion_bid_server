@@ -22,8 +22,8 @@
                             <h5><strong>BENEFICIARIES</strong>  </h5>
                             <h2 class="row">
                                 <span class="col-xs-4" v-cloak>@{{ beneficiaries.total }}</span>
-                                <span v-show="inactive" class="col-xs-4 text-success" v-cloak>@{{ beneficiaries.active }}</span>
-                                <span v-show="inactive" class="col-xs-4 text-danger" v-cloak>@{{ beneficiaries.inactive }}</span>
+                                <span v-show="invalid" class="col-xs-4 text-success" v-cloak>@{{ beneficiaries.valid }}</span>
+                                <span v-show="invalid" class="col-xs-4 text-danger" v-cloak>@{{ beneficiaries.invalid }}</span>
                             </h2>
                         </section>
                         <div class="hold-icon"><i class="fa fa-users"></i></div>
@@ -136,8 +136,8 @@
                     },
                     beneficiaries: {
                         total: null,
-                        active: null,
-                        inactive: null
+                        valid: null,
+                        invalid: null
                     }
                 },
                 computed: {
@@ -147,9 +147,9 @@
                         }
                         return true;
                     },
-                    inactive: function(){
+                    invalid: function(){
                         if(this.beneficiaries){
-                            return this.beneficiaries.inactive > 0;
+                            return this.beneficiaries.invalid > 0;
                         }
                     }
                 },
