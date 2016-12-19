@@ -1,6 +1,6 @@
 <nav id="menu"  data-search="close" style="background: #29166f; color: white;">
     <ul>
-        @if(collect([1, 8])->contains(auth()->user()->role->id))
+        @if(collect([1, 7, 5])->contains(auth()->user()->role->id))
             <li class="{{ Request::is('dashboard') || Request::is('dashboard/*') ? "mm-selected" :  '' }} ">
                 <a href="{!! route('dashboard') !!}"><i style="color: white;" class="icon  fa fa-laptop"></i> Dashboard </a>
             </li>

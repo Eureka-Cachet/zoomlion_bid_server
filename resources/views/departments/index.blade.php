@@ -11,7 +11,13 @@
 
         <div id="content">
 
-            @include('partials.departments._top_bar');
+            @if(collect([1, 7])->contains(auth()->user()->role->id))
+                @include('partials.departments._top_bar');
+            @endif
+
+            @if(collect([2])->contains(auth()->user()->role->id))
+                @include('partials.departments._top_bar_mini');
+            @endif
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">

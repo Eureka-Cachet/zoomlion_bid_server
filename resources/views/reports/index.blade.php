@@ -285,7 +285,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 4, 3])->contains(auth()->user()->role->id))
+                @if(collect([1, 4, 3, 2])->contains(auth()->user()->role->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">
@@ -528,7 +528,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 4, 3])->contains(auth()->user()->role->id))
+                @if(collect([1, 4, 3, 2])->contains(auth()->user()->role->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">

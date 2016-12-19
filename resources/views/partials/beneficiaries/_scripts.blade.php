@@ -21,9 +21,15 @@
                 },
                 {
                     title: 'Status',
-                    name: 'status',
+                    name: 'active',
                     dataClass: 'text-center',
                     callback: 'formatStatus'
+                },
+                {
+                    title: 'Information',
+                    name: 'status',
+                    dataClass: 'text-center',
+                    callback: 'formatValid'
                 },
                 {
                     name: '__component:actions',
@@ -132,9 +138,16 @@
                     },
                     formatStatus: function(status){
                         if(status){
+                            return "<span class='label label-success'>active</span>";
+                        }else{
+                            return "<span class='label label-danger'>inactive</span>"
+                        }
+                    },
+                    formatValid: function(status){
+                        if(status){
                             return "<span class='label label-success'>valid</span>";
                         }else{
-                            return "<span class='label label-danger'>not valid</span>"
+                            return "<span class='label label-danger'>invalid</span>"
                         }
                     }
                 },

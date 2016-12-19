@@ -83,8 +83,6 @@ class SeedRoles extends Command
             ],[
                 'name' => 'SUPERVISOR'
             ],[
-                'name' => 'TEAM LEADER'
-            ],[
                 'name' => 'MANAGEMENT'
             ]
         ];

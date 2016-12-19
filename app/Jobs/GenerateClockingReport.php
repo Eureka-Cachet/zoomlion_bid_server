@@ -120,6 +120,7 @@ class GenerateClockingReport extends Job implements ShouldQueue
                     'date' => Carbon::parse($clock->date)->toFormattedDateString(),
                     'day' => Carbon::parse($clock->date)->dayOfYear,
                     'time' => Carbon::parse($clock->time)->toTimeString(),
+                    'time_t' => $clock->time,
                     'clock_in' => $this->get_clock_in($clock),
                     'device' => $clock->device->code
                 ];
@@ -129,7 +130,8 @@ class GenerateClockingReport extends Job implements ShouldQueue
                 return [
                     'date' => $day[0]['date'],
                     'clock_in' => $day[0]['time'],
-                    'clock_out' => array_key_exists(1, $day) ? $day[1]['time'] : "N/A"
+                    'clock_out' => array_key_exists(1, $day) ? $day[1]['time'] : "N/A",
+                    'duration' => array_key_exists(1, $day) ? $this->get_duration($day[0]['time_t'], $day[1]['time_t']) : "N/A"
                 ];
             })
         ;
@@ -206,5 +208,15 @@ class GenerateClockingReport extends Job implements ShouldQueue
                 return Carbon::parse($clock->date)->isSameDay($date);
             })->sortBy('time');
         return $inAndOut;
+    }
+
+    /**
+     * @param $in
+     * @param $out
+     * @return int
+     */
+    private function get_duration($in, $out)
+    {
+        return Carbon::parse($in)->diffInHours($out);
     }
 }

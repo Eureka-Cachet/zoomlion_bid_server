@@ -51,6 +51,7 @@
                         dataClass: 'text-center'
                     }
                 ],
+
                 staffFields = [
                     {
                         title: 'BID',
@@ -71,16 +72,19 @@
                         name: 'attendances',
                         dataClass: 'text-center',
                         callback: 'totalClock'
-                    },{
+                    },
+                    {
                         title: 'Actions',
                         name: '__actions',
                         dataClass: 'text-center'
                     }
                 ],
-                departmentActions = [
-                    { name: 'view-staff', label: '', icon: 'fa fa-users', class: 'btn btn-xs'},
-                    { name: 'delete-module', label: '', icon: 'fa fa-trash-o', class: 'btn btn-xs'}
-                ],
+
+                // departmentActions = [
+                //     { name: 'view-staff', label: '', icon: 'fa fa-users', class: 'btn btn-xs'},
+                //     { name: 'delete-module', label: '', icon: 'fa fa-trash-o', class: 'btn btn-xs'}
+                // ],
+
                 staffActions = [
                     { name: 'view-clocking', label: '', icon: 'fa fa-eye', class: 'btn btn-xs'}
                 ];
@@ -304,6 +308,7 @@
                     searchFor: '',
                     sortOrder: [],
                     beneficiariesFields: staffFields,
+                    staffActions: staffActions,
                     selectedDepartment: null,
                     moreParams: []
                 };
@@ -423,6 +428,12 @@
                     formData.append('_token', "{!! csrf_token() !!}");
                     this.$broadcast('module:create', formData);
                 },
+                fetchUserDistricts: function(){
+                    var url = 'internal-api/districts?scope=employment';
+                    this.$http.get(url).then(resp => {
+                        this.districts = resp.data
+                    })
+                },
                 fetchDistricts: function(region){
                     var url = 'internal-api/regions/' + region.id + '/districts?scope=employment';
                     this.$http.get(url).then(resp => {
@@ -499,6 +510,9 @@
             },
 
             ready: function(){
+                if(Number.parseInt(role_id) === 2){
+                    this.fetchUserDistricts();
+                }
                 this.clockRange.start = dateFns.startOfWeek(new Date);
                 this.clockRange.end = dateFns.endOfWeek(new Date);
                 this.fetchRanks();

@@ -95,7 +95,7 @@
                          && this.beneficiary.region
                          && this.beneficiary.district
                          && this.beneficiary.location
-                         && this.beneficiary.module
+                         && this.beneficiary.module.department
                         ){
                             $profilePanel.LoadingOverlay('show', loadingOptions);
                             var url = '/internal-api/beneficiaries/' + this.beneficiary.uuid;

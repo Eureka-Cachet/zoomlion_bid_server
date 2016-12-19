@@ -4,7 +4,7 @@
 
     <div id="main">
 
-        @include('partials._breadcrumbs', ["child" => $b["bid"], "parent" => ["beneficiaries", route('beneficiaries.index')]]);
+        @include('partials._breadcrumbs', ["child" => $b["bid"], "parent" => ["Beneficiaries", route('beneficiaries.index')]]);
 
 
         <div class="panel col-md-10 col-md-offset-1">

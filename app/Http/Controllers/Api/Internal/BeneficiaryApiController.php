@@ -111,6 +111,7 @@ class BeneficiaryApiController extends Controller
             return response()->json(['status' => 'ok'])->setStatusCode(200);
         }
         $data = $this->format_gender(collect($request->all()));
+        $data = $this->format_full_name($data);
         $data = $this->parse_date($data);
         $updated = $this->beneficiaryRepository->update($uuid, $data);
         $updated = $this->manager->createData(new Item($updated, new BeneficiaryCollectionTransformer(false)))

@@ -69,7 +69,7 @@
                     pagination-info-class=""
                     pagination-component-class=""
                     pagination-component="vuetable-pagination-bootstrap"
-                    :item-actions="beneficiariesActions"
+                    :item-actions="staffActions"
                     :append-params="moreParams"
                     ></vuetable>
         </div>

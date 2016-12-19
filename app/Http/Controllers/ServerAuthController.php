@@ -123,7 +123,7 @@ class ServerAuthController extends Controller
                 $url = url("/reports");
                 break;
             case 5:
-                $url = url("/users");
+                $url = url("/");
                 break;
             case 8:
                 $url = url("/");

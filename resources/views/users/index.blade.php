@@ -362,13 +362,13 @@
                                             $user_form.modal('hide');
                                             console.log(response.data);
                                         }else{
-                                            this.notify("Error! Failed to add the user.", 'danger');
+                                            this.notify("Error! Invalid Data", 'danger');
                                         }
                                         $user_form.LoadingOverlay('hide', true);
                                     },
                                     function(response){
                                         $user_form.LoadingOverlay('hide', true);
-                                        this.notify("Error! Check your connection", 'danger');
+                                        this.notify("Error! Invalid Data", 'danger');
                                     });
                         }
                     },
