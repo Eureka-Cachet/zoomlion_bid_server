@@ -1,0 +1,14 @@
+.idea
+/vendor
+/node_modules
+/storage
+/StaffPicture
+/socket/node_modules
+/resources/assets
+.env
+.local.env
+.production.env
+.docker
+docker-compose.yml
+docker-compose.production.yml
+
