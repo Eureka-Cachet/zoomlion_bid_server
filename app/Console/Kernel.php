@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
     {
 //         $schedule->command('sys:db_backup')->daily();
          $schedule->command('sys:db_backup')->weekly();
-         $schedule->command('sys:db_backup')->monthly();
+//         $schedule->command('sys:db_backup')->monthly();
          $schedule->command('sys:db_backup')->quarterly();
 //         $schedule->command('sys:db_backup')->yearly();
 

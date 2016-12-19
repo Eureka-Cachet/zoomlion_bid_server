@@ -111,7 +111,7 @@
                                 if(filename != null){
                                     var url = "{!! route('pdf.download') !!}" + "?filename=" + filename + "&type=" + type + "&folder=" + folder;
                                     var downloadButton = "<a class='btn btn-lg' href=" + url + "> <i style='color: #29166f;' class='fa fa-cloud-download fa-1x'></i></a>";
-                                    $.dialog("Click the " + downloadButton + " to download the file");
+                                    $.dialog("Click the " + downloadButton + " to download.");
                                 }
                     }
                 },

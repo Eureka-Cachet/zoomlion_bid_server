@@ -274,6 +274,7 @@
                 paginationInfoTemplate: '???? {from} ??? {to} ?????????? {total} ??????',
                 itemActions: [
                     { name: 'restore', icon: 'fa fa-refresh', class: 'btn btn-xs'},
+                    { name: 'download', icon: 'fa fa-cloud-download', class: 'btn btn-xs' },
                     { name: 'delete', icon: 'fa fa-trash-o', class: 'btn btn-xs' }
                 ],
                 moreParams: [],
@@ -396,6 +397,12 @@
                         confirmButtonClass: 'btn-warning',
                         cancelButtonClass: 'btn-success'
                     });
+                },
+                download_dump: function(data){
+                    var url = "{!! route('pdf.download') !!}" + "?filename=" + data.name + "&type=backup";
+                    window.location.href = url;
+
+                    console.log(data, url);
                 },
                 schedule: function(){
                     $new_schedule.LoadingOverlay('show', loadingOptions);
@@ -542,6 +549,9 @@
                             break;
                         case "delete":
                             this.delete_dump(data);
+                            break;
+                        case "download":
+                            this.download_dump(data);
                             break;
                     }
                 },

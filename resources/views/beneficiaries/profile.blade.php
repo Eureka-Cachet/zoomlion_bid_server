@@ -46,9 +46,9 @@
                                                                 <div class="col-xs-6">
                                                                         <h3>Personal Information</h3>
                                                                 </div>
-                                                                <div class="col-xs-6 text-right">
-                                                                        <button v-if="beneficiary.active" @click="deactiveBeneficiary" type="button" class="btn btn-theme"> Deactivate</button>
-                                                                        <button v-else @click="activeBeneficiary" type="button" class="btn btn-success"> Active</button>
+                                                                <div v-cloak v-if="beneficiary" class="col-xs-6 text-right">
+                                                                        <button style="background: #29166f; color: #fff; border-color: #29166f;" v-cloak v-if="beneficiary.active" @click="deactivateBeneficiary" type="button" class="btn"> deactivate</button>
+                                                                        <button style="background: #29166f; color: #fff; border-color: #29166f;" v-cloak v-else @click="activateBeneficiary" type="button" class="btn"> activate</button>
                                                                 </div>
                                                         </div>
                                                     <hr>

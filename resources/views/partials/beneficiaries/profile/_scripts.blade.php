@@ -21,6 +21,9 @@
         new Vue({
             el: "#main-content",
             computed: {
+                form: function(){
+                    return _.isEqual(this.viewingImage, this.beneficiary.form);
+                }
             },
             data: {
                 viewingImage: {
@@ -218,7 +221,7 @@
                 },
                 activateBeneficiary: function(){
                     $profilePanel.LoadingOverlay('show', loadingOptions);
-                    var url = "activate";
+                    var url = "/internal-api/beneficiaries/" + beneficiaryUuid + "/activate";
                     this.$http.post(url, {"_token": "{{ csrf_token() }}"})
                         .then(function(resp){
                             if(resp.status === 200){
@@ -233,7 +236,7 @@
                 },
                 deactivateBeneficiary: function(){
                     $profilePanel.LoadingOverlay('show', loadingOptions);
-                    var url = "deactivate";
+                    var url = "/internal-api/beneficiaries/" + beneficiaryUuid + "/deactivate";
                     this.$http.post(url, {"_token": "{{ csrf_token() }}"})
                         .then(function(resp){
                             if(resp.status === 200){
@@ -245,6 +248,11 @@
                             this.notify("Beneficiary Activation Failed", "danger", true);
                             $profilePanel.LoadingOverlay('hide', true);
                         })
+                },
+                downloadForm: function(){
+                    console.log(this.beneficiary.form);
+                    var url = "{!! route('pdf.download') !!}" + "?filename=" + this.beneficiary.form.name + "&type=image&folder=forms";
+                    window.location.href = url;
                 }
             },
             created: function(){

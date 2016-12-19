@@ -94,13 +94,12 @@ class PagesController extends Controller
      */
     public function download()
     {
-//        dd(request()->all());
         $filename = request()->get('filename');
         $file_type = request()->get('type');
         $report_folder = request()->get('folder');
 
-        if(is_null($filename) || is_null($file_type)){
-            return response()->json(['success' => false]);
+        if(is_null($filename) && is_null($file_type)){
+            abort(404);
         }
 
         return $this->download_file($file_type, $filename, $report_folder);
@@ -118,14 +117,18 @@ class PagesController extends Controller
             switch ($file_type) {
                 case "form":
                     return response()->download(storage_path("app/forms/{$filename}"));
+                case "image":
+                    return response()->download(storage_path("app/beneficiaries/{$folder}/{$filename}"));
+                case "backup":
+                    return response()->download(storage_path("app/backups/{$filename}"));
                 case "report":
                     return response()->download(storage_path("app/reports/{$folder}/{$filename}"));
                 default:
-                    return response()->json(['success' => false]);
+                    abort(404);
             }
         }catch (\Exception $e){
-            dd($e->getMessage());
-            return response()->json(['success' => false]);
+            var_dump($e->getMessage());
+            abort(404);
         }
     }
 }

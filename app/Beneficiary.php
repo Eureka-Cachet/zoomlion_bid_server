@@ -7,7 +7,7 @@ class Beneficiary extends Model
     protected $fillable = ['form_id', 'uuid', 'full_name', 'date_of_birth', 'bid', 'surname', 'forenames',
         'gender', 'phone_number', 'address', 'module_id', 'rank_id', 'account_number', 'location_id',
     'bank_name', 'bank_branch', 'date_of_employment', 'allowance', 'active', 'region_id', 'district_id',
-        'identification_id', 'identification_number'];
+        'identification_id', 'identification_number', 'valid'];
 
     public function form(){
         return $this->belongsTo(Form::class, 'form_id');

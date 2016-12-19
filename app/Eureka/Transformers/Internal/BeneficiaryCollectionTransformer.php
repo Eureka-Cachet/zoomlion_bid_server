@@ -116,7 +116,8 @@ class BeneficiaryCollectionTransformer extends TransformerAbstract
         if(! $beneficiary->form) return null;
         return [
             "uri" => "data:image/jpg;base64,{$beneficiary->form->encoded}",
-            "code" => $beneficiary->form->code
+            "code" => $beneficiary->form->code,
+            "name" => $this->get_form_image_name($beneficiary->form->image)
         ];
     }
 
@@ -169,5 +170,14 @@ class BeneficiaryCollectionTransformer extends TransformerAbstract
     private function get_zoom_logo()
     {
         return SysImages::where("name", "ZoomLionLogo")->first()->encoded;
+    }
+
+    /**
+     * @param $image
+     * @return mixed
+     */
+    private function get_form_image_name($image)
+    {
+        return collect(explode("/", $image))->last();
     }
 }
