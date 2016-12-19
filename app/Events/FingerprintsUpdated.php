@@ -50,6 +50,6 @@ class FingerprintsUpdated extends Event implements ShouldQueue, ShouldBroadcast
 
     public function broadcastWith()
     {
-        return $this->fingerprints;
+        return [$this->fingerprints];
     }
 }

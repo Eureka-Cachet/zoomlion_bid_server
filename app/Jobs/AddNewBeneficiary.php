@@ -4,6 +4,7 @@ namespace clocking\Jobs;
 
 use clocking\Beneficiary;
 use clocking\Events\BeneficiaryAddingFailed;
+use clocking\Events\BeneficiaryWasUpdated;
 use clocking\Events\FingerprintsUpdated;
 use clocking\Events\PushDataToClients;
 use clocking\Fingerprint;
@@ -69,6 +70,7 @@ class AddNewBeneficiary extends Job implements ShouldQueue
             event(new FingerprintsUpdated($this->getAllFingerprints(), "FINGERPRINTS:UPDATED"));
             if($this->updating){
                 event(new PushDataToClients($beneficiary->uuid, ChannelMaker::make($this->uuid), "BeneficiaryWasUpdated"));
+                event(new BeneficiaryWasUpdated());
             }else{
                 event(new BeneficiaryWasCreated($beneficiary, ""));
                 event(new PushDataToClients([], ChannelMaker::make($this->uuid), "BeneficiaryWasEnrolled"));

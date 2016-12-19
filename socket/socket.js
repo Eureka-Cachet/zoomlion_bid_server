@@ -42,7 +42,7 @@ enrolment.on('connection', function(socket){
     socket.on('enrolment', function(payload){
         console.log('***********from enrolment*************');
         console.log(payload.channel);
-        socket.broadcast.emit(payload.channel, payload.data);
+        socket.broadcast.emit(payload.channel, JSON.stringify(payload.data));
         console.log('**************************************');
     });
 
@@ -84,6 +84,7 @@ function removeFromOnlineList(onlineList, connId) {
     console.log("++++++++++++++++++ removeFromOnlineList +++++++++++++++");
     return left;
 }
+
 io.on('connection', function(socket){
     console.log("+++++++++++++++new public connection++++++++++++++++++");
     console.log(socket.id);

@@ -8,6 +8,7 @@ use clocking\Events\BackupRestoreWasSuccessful;
 use clocking\Events\BackupWasSuccessful;
 use clocking\Events\BeneficiaryAddingFailed;
 use clocking\Events\BeneficiaryHasClocked;
+use clocking\Events\BeneficiaryWasUpdated;
 use clocking\Events\CaptureBioData;
 use clocking\Events\FormsDataGenerationFailed;
 use clocking\Events\FormsDataWereGenerated;
@@ -57,6 +58,9 @@ class EventServiceProvider extends ServiceProvider
             NotifyFormGeneratorForFailure::class,
         ],
         BeneficiaryWasCreated::class => [
+            DispatchUpdatedDataJob::class
+        ],
+        BeneficiaryWasUpdated::class => [
             DispatchUpdatedDataJob::class
         ],
         BeneficiaryAddingFailed::class => [],

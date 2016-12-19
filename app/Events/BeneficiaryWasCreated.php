@@ -57,6 +57,6 @@ class BeneficiaryWasCreated extends Event implements ShouldQueue, ShouldBroadcas
      */
     public function broadcastWith()
     {
-        return $this->beneficiary->full_name;
+        return [$this->beneficiary->full_name];
     }
 }
