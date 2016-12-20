@@ -120,7 +120,7 @@ Route::group(['prefix' => 'internal-api','namespace' => 'Api\Internal', 'middlew
 
     Route::post('/reports/generate', ['as' => 'api.reports.generate', 'uses' => 'ReportApiController@generate']);
 
-    Route::get('/logs', ['as' => 'api.logs.all', 'uses' => 'LogsApiController@all']);
+    Route::get('/activity-logs', ['as' => 'api.logs.all', 'uses' => 'LogsApiController@all']);
 });
 
 $api = app('Dingo\Api\Routing\Router');

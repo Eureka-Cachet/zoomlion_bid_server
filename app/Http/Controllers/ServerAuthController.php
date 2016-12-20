@@ -2,6 +2,7 @@
 
 namespace clocking\Http\Controllers;
 
+use Carbon\Carbon;
 use clocking\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -49,6 +50,11 @@ class ServerAuthController extends Controller
      */
     public function logout()
     {
+//        activity()
+//            ->causedBy(auth()->user())
+//            ->withProperty('time', Carbon::now())
+//            ->log("Logged out");
+
         $this->auth->logout();
 
         return redirect()->route('login');
@@ -78,6 +84,10 @@ class ServerAuthController extends Controller
      */
     private function on_login_successful()
     {
+//        activity()
+//            ->causedBy(auth()->user())
+//            ->withProperty('time', Carbon::now())
+//            ->log("Logged in");
         $default_url = $this->get_default_url();
         $intended_url = session()->pull('url.intended', $default_url);
         return response()->json([

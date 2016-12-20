@@ -62,7 +62,7 @@
 
         @if(collect([1, 5])->contains(auth()->user()->role->id))
             <li class="{{ Request::is('logs') || Request::is('logs/*') ? "mm-selected":  '' }} ">
-                <a href="{!! route('logs.index') !!}"><i style="color: white;" class="icon  fa fa-list-alt"></i> Logs </a>
+                <a href="{!! route('logs.index') !!}"><i style="color: white;" class="icon  fa fa-list-alt"></i> Activity Logs </a>
             </li>
         @endif
 
