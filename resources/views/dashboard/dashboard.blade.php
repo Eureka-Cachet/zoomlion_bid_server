@@ -22,8 +22,8 @@
                             <h5><strong>BENEFICIARIES</strong>  </h5>
                             <h2 class="row">
                                 <span class="col-xs-4" v-cloak>@{{ beneficiaries.total }}</span>
-                                <span v-show="invalid" class="col-xs-4 text-success" v-cloak>@{{ beneficiaries.valid }}</span>
-                                <span v-show="invalid" class="col-xs-4 text-danger" v-cloak>@{{ beneficiaries.invalid }}</span>
+                                <span v-show="invalid" class="col-xs-4 text-success" v-cloak><b>@{{ beneficiaries.valid }}</b></span>
+                                <span v-show="invalid" class="col-xs-4 text-danger" v-cloak><b>@{{ beneficiaries.invalid }}</b></span>
                             </h2>
                         </section>
                         <div class="hold-icon"><i class="fa fa-users"></i></div>

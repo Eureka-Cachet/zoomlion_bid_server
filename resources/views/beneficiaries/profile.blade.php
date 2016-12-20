@@ -4,7 +4,7 @@
 
     <div id="main">
 
-        @include('partials._breadcrumbs', ["child" => $b["bid"], "parent" => ["Beneficiaries", route('beneficiaries.index')]]);
+        @include('partials._breadcrumbs', ["child" => $b["bid"], "parent" => ["Beneficiaries", route('beneficiaries.index')]])
 
 
         <div class="panel col-md-10 col-md-offset-1">
@@ -250,6 +250,6 @@
 
 @section('scripts')
 
-    @include('partials.beneficiaries.profile._scripts', ["beneficiary" => $b]);
+    @include('partials.beneficiaries.profile._scripts', ["beneficiary" => $b])
 
 @endsection
