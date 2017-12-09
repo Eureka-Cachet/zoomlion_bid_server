@@ -45,6 +45,7 @@ class ModuleAssignment extends Command
      */
     public function handle()
     {
+        $this->info("Assignment started...");
         try{
             Location::all()->each(function($location){
                 Department::all()->each(function($department) use($location){
