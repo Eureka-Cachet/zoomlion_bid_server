@@ -15,7 +15,7 @@ class ReportsMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $role_id = auth()->user()->role->id;
+        $role_id = auth()->user()->roles->first()->id;
         if(
         !collect([1, 2, 3, 4, 8])->contains($role_id)
         ){

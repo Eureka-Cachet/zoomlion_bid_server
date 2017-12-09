@@ -15,7 +15,7 @@ class OnlyManagement
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->role->id != 8){
+        if(auth()->user()->roles->first()->id != 8){
             abort(404);
         }
         return $next($request);

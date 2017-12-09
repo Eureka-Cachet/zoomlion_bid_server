@@ -15,7 +15,7 @@ class LocationsMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $role_id = auth()->user()->role->id;
+        $role_id = auth()->user()->roles->first()->id;
         if(
         !collect([1, 2, 5])->contains($role_id)
         ){

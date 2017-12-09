@@ -15,7 +15,7 @@ class OnlyAccount
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->role->id != 4){
+        if(auth()->user()->roles->first()->id != 4){
             abort(404);
         }
         return $next($request);
