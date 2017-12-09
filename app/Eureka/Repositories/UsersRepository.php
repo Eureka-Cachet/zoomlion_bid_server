@@ -121,6 +121,10 @@ class UsersRepository
         return bcrypt('Zoomlion12$');
     }
 
+    /**
+     * @return Uuid
+     * @throws \Exception
+     */
     private function get_uuid()
     {
         return Uuid::generate(4);

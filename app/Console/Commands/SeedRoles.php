@@ -61,7 +61,7 @@ class SeedRoles extends Command
     private function wipe_the_table()
     {
         DB::table('roles')->truncate();
-        User::where('role_id', 1)->first()->delete();
+//        User::where('role_id', 1)->first()->delete();
     }
 
     /**
@@ -72,18 +72,27 @@ class SeedRoles extends Command
         return [
             [
                 'name' => 'SYSADMIN'
-            ],[
+            ],
+            [
                 'name' => 'OPERATION'
-            ],[
+            ],
+            [
                 'name' => 'AUDIT'
-            ],[
+            ],
+            [
                 'name' => 'ACCOUNT'
-            ],[
+            ],
+            [
                 'name' => 'IT'
-            ],[
+            ],
+            [
                 'name' => 'SUPERVISOR'
-            ],[
+            ],
+            [
                 'name' => 'MANAGEMENT'
+            ],
+            [
+                'name' => 'ADMIN'
             ]
         ];
     }
@@ -104,10 +113,10 @@ class SeedRoles extends Command
     private function makeSysAdmin()
     {
         User::create([
-            'username' => 'admin',
+            'username' => 'adminsys',
             'region_id' => '3',
             'uuid' => Uuid::generate(4),
-            'password' => bcrypt('admin'),
+            'password' => bcrypt('/029e*m(7G2m1{s'),
             'role_id' => 1,
             'full_name' => 'System Administrator',
             'date_of_birth' => Carbon::now()

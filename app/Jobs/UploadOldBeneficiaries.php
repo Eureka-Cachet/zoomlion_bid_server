@@ -39,34 +39,40 @@ class UploadOldBeneficiaries extends Job implements ShouldQueue
      */
     public function handle()
     {
-        Excel::load($this->file_name, function($reader){
+        dump("started -> {$this->file_name}");
+        try{
+            Excel::load($this->file_name, function($reader){
 
-            $data = $reader->all()->map(function ($row) {
-                return [
-                    "bid" => (int)$row->staffid,
-                    "full_name" => $row->staffname,
-                    "rank_id" => $this->get_rank_id($row->section),
-                    "region_id" => $this->get_region_id($row->region),
-                    "district_id" => $this->get_district_id($row->district),
-                    "allowance" => $row->salary,
-                    "bank_name" => $row->bank,
-                    "account_number" => $row->account,
-                    "phone_number" => $row->phone,
-                    "surname" => $this->get_surname($row->staffname),
-                    "forenames" => $this->get_forenames($row->staffname),
-                    "uuid" => CodeGenerator::uuid()
-                ];
-            })
-                ->each(function($b){
-                $beneficiary = Beneficiary::create($b);
-                $path_and_encoded = $this->get_path_and_encoded($beneficiary);
+                $reader->all()->map(function ($row) {
+                    return [
+                        "bid" => (int)$row->staffid,
+                        "full_name" => $row->staffname,
+                        "rank_id" => $this->get_rank_id($row->section),
+                        "region_id" => $this->get_region_id($row->region),
+                        "district_id" => $this->get_district_id($row->district),
+                        "allowance" => $row->salary,
+                        "bank_name" => $row->bank,
+                        "account_number" => $row->account,
+                        "phone_number" => $row->phone,
+                        "surname" => $this->get_surname($row->staffname),
+                        "forenames" => $this->get_forenames($row->staffname),
+                        "uuid" => CodeGenerator::uuid()
+                    ];
+                })
+                    ->each(function($b){
+                        $beneficiary = Beneficiary::create($b);
+                        $path_and_encoded = $this->get_path_and_encoded($beneficiary);
 
-                $beneficiary->picture()->create([
-                    'path' => $path_and_encoded["path"],
-                    'encoded' => $path_and_encoded["encoded"]
-                ]);
+                        $beneficiary->picture()->create([
+                            'path' => $path_and_encoded["path"],
+                            'encoded' => $path_and_encoded["encoded"]
+                        ]);
+                    });
             });
-        });
+            dump("finished -> {$this->file_name}");
+        } catch (\Exception $e){
+            throw new $e;
+        }
     }
 
     /**
@@ -75,7 +81,10 @@ class UploadOldBeneficiaries extends Job implements ShouldQueue
      */
     private function get_rank_id($section)
     {
-        $first = Rank::where('name', 'like', "%{$section}%")->first();
+        if(ends_with(strtolower($section), 's')){
+            $section = substr($section, 0, -1);
+        }
+        $first = Rank::where('name', 'like', "{$section}%")->first();
         return $first ? $first->id : null;
     }
 

@@ -67,31 +67,31 @@ class SeedRanks extends Command
                 'code' => strtoupper(str_random(3)).'01'
             ],
             [
-                'name' => 'SWEEPERS',
+                'name' => 'SWEEPER',
                 'code' => strtoupper(str_random(3)).'02'
             ],
             [
-                'name' => 'RIDERS',
+                'name' => 'RIDER',
                 'code' => strtoupper(str_random(3)).'03'
             ],
             [
-                'name' => 'GUARDS',
+                'name' => 'GUARD',
                 'code' => strtoupper(str_random(3)).'04'
             ],[
                 'name' => 'GANG LEADER',
                 'code' => strtoupper(str_random(3)).'05'
             ],[
-                'name' => 'BRIGADERS',
+                'name' => 'BRIGADE',
                 'code' => strtoupper(str_random(3)).'06'
             ],[
-                'name' => 'SUPERVISORS',
+                'name' => 'SUPERVISOR',
                 'code' => strtoupper(str_random(3)).'07'
             ],[
-                'name' => 'PLANTERS',
+                'name' => 'PLANTER',
                 'code' => strtoupper(str_random(3)).'08'
             ],
             [
-                'name' => 'SPRAYERS',
+                'name' => 'SPRAYER',
                 'code' => strtoupper(str_random(3)).'09'
             ],
         ];
