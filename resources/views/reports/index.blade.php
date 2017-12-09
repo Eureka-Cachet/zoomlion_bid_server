@@ -11,7 +11,7 @@
             <div id="content" class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-2">
                     
-                @if(collect([1, 4])->contains(auth()->user()->role->id))
+                @if(collect([1, 4])->contains(auth()->user()->roles->first()->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">
@@ -93,7 +93,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 3])->contains(auth()->user()->role->id))
+                @if(collect([1, 3])->contains(auth()->user()->roles->first()->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">
@@ -189,7 +189,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 3])->contains(auth()->user()->role->id))
+                @if(collect([1, 3])->contains(auth()->user()->roles->first()->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">
@@ -285,7 +285,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 4, 3, 2])->contains(auth()->user()->role->id))
+                @if(collect([1, 4, 3, 2])->contains(auth()->user()->roles->first()->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">
@@ -397,7 +397,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 2, 4, 3])->contains(auth()->user()->role->id))
+                @if(collect([1, 2, 4, 3])->contains(auth()->user()->roles->first()->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">
@@ -528,7 +528,7 @@
                     </div>
                 @endif
                     
-                @if(collect([1, 4, 3, 2])->contains(auth()->user()->role->id))
+                @if(collect([1, 4, 3, 2])->contains(auth()->user()->roles->first()->id))
                     <div class="col-xs-12">
                         <section class="panel">
                             <header class="panel-heading row">

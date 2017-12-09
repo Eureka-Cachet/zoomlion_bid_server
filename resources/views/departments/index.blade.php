@@ -11,11 +11,11 @@
 
         <div id="content">
 
-            @if(collect([1, 7])->contains(auth()->user()->role->id))
+            @if(collect([1, 7])->contains(auth()->user()->roles->first()->id))
                 @include('partials.departments._top_bar');
             @endif
 
-            @if(collect([2])->contains(auth()->user()->role->id))
+            @if(collect([2])->contains(auth()->user()->roles->first()->id))
                 @include('partials.departments._top_bar_mini');
             @endif
 

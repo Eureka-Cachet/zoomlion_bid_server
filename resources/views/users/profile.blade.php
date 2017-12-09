@@ -3,7 +3,7 @@
 @section('main-content')
     <div id="main">
 
-        @if(collect([1, 5])->contains(auth()->user()->role->id))
+        @if(collect([1, 5])->contains(auth()->user()->roles->first()->id))
             @include('partials._breadcrumbs', ['parent' => ['Users', route('users.index')], 'child' => ucwords($user->full_name)])
         @endif
 
@@ -18,7 +18,7 @@
                             <div class="col-md-6">
                                 <h4>Profile</h4>
                             </div>
-                            @if(auth()->user()->id != $user->id OR (auth()->user()->role->id == 1 AND auth()->user()->id != $user->id))
+                            @if(auth()->user()->id != $user->id OR (auth()->user()->roles->first()->id == 1 AND auth()->user()->id != $user->id))
                                 <div class="col-md-6 text-right">
                                     <button @click="deactivateUser" class="btn btn-sm" v-if="user.active">Deactivate</button>
                                     <button @click="activateUser" class="btn btn-sm" v-if="!user.active">Activate</button>
@@ -48,7 +48,7 @@
                                     <label class="control-label">Role</label>
                                     <div>
                                         <p class="form-control-static">
-                                            {!! $user->role->name !!}
+                                            {!! $user->roles->first()->name !!}
                                         </p>
                                     </div>
                                 </div>

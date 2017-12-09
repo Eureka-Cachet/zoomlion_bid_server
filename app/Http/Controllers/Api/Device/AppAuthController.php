@@ -105,7 +105,7 @@ class AppAuthController extends Controller
         $uuid = CodeGenerator::uuid();
         $time = Carbon::now();
 
-        if ($user->role_id == 1){
+        if ($user->roles->first()->id == 1){
             Device::first()->logs()->create([
                 "connected_time" => $time,
                 "uuid" => $uuid,

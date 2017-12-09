@@ -3,7 +3,7 @@
 <script type="text/javascript">
     $(function(){
 
-        var role_id = "{{ auth()->user()->role->id }}";
+        var role_id = "{{ auth()->user()->roles->first()->id }}";
 
         var sysAdmin = Number.parseInt(role_id) === 1;
 

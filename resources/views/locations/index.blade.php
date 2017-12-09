@@ -18,7 +18,7 @@
                                 <h4><b>Regions</b> </h4>
                             </div>
                             <div class="col-xs-6">
-                                @if(auth()->user()->role->id == 1)
+                                @if(auth()->user()->roles->first()->id == 1)
                                     <a style="color: #29166f;" data-toggle="modal" href="#newRegion" class="pull-right">
                                         <i class="fa fa-plus-square"></i>
                                         New Region
@@ -41,7 +41,7 @@
                                 <h4><b v-cloak>@{{ selectedRegion.name }}</b> Districts </h4>
                             </div>
                             <div class="col-xs-12 col-sm-3" v-if="regionSelected">
-                                @if(auth()->user()->role->id == 1)
+                                @if(auth()->user()->roles->first()->id == 1)
                                     <a style="color: #29166f;" data-toggle="modal" href="#newDistrict" class="pull-right">
                                         <i class="fa fa-plus-square"></i>
                                         New District
@@ -59,7 +59,7 @@
                                 <h4><b v-cloak>@{{ selectedDistrict.name }}</b> Locations </h4>
                             </div>
                             <div class="col-xs-12 col-sm-3" v-if="districtSelected">
-                                @if(auth()->user()->role->id == 1)
+                                @if(auth()->user()->roles->first()->id == 1)
                                     <a style="color: #29166f;" data-toggle="modal" href="#newLocation" class="pull-right">
                                         <i class="fa fa-plus-square"></i>
                                         New Location

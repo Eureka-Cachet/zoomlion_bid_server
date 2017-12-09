@@ -109,7 +109,7 @@ class ServerAuthController extends Controller
      */
     private function get_authenticated_user_role()
     {
-        return auth()->user()->role;
+        return auth()->user()->roles->first();
     }
 
     /**

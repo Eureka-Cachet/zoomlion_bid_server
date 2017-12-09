@@ -47,8 +47,10 @@ class UsersRepository
     public function add_user($payload)
     {
         $attributes = $this->prepare_payload($payload);
-        return $this->user
-            ->create($attributes);
+        $user = $this->user
+            ->create(array_except($attributes, 'role_id'));
+        $user->roles()->attach($attributes['role_id']);
+        return $user;
     }
 
     public function update_user_information($uuid, $payload)
@@ -141,7 +143,9 @@ class UsersRepository
     private function make_username_for($user_full_name)
     {
         $names = explode(" ", $user_full_name);
-        $username = str_split($names[0])[0] . '.' . $names[1];
+        $times = Carbon::now()->timestamp;
+        $s = "{$times}";
+        $username = str_split($names[0])[0] . array_last(str_split($names[1])) . '.' . $names[1] . '.' . substr($s, -4, 5);
         return strtolower($username);
     }
 
@@ -150,8 +154,11 @@ class UsersRepository
      */
     public function free_supervisor()
     {
-        return $this->user->with('role', 'device')
-            ->where('role_id', 6)
+        return $this->user->with('roles', 'device')
+            ->whereHas('roles', function($query){
+                $query->where('name', "SUPERVISOR");
+            })
+//            ->where('role_id', 6)
             ->get()->filter(function($supervisor){
                 return is_null($supervisor->device);
             });
@@ -159,8 +166,11 @@ class UsersRepository
 
     public function busy_supervisor()
     {
-        return $this->user->with('role', 'device')
-            ->where('role_id', 6)
+        return $this->user->with('roles', 'device')
+            ->whereHas('roles', function($query){
+                $query->where('name', "SUPERVISOR");
+            })
+//            ->where('role_id', 6)
             ->get()->reject(function($supervisor){
                 return is_null($supervisor->device);
             });

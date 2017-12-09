@@ -20,7 +20,7 @@
                                 <h4>Active Devices </h4>
                             </div>
                             <div class="col-xs-1 col-sm-4">
-                                @if(auth()->user()->role->id == 1)
+                                @if(auth()->user()->roles->first()->id == 1)
                                     <a style="color: #29166f;" data-toggle="modal" href="#newDevice" class="pull-right">
                                         <i class="fa fa-plus-square"></i>
                                         <span class="hidden-xs visible-sm-4">New Device</span>

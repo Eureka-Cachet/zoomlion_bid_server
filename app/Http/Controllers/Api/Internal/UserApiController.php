@@ -117,13 +117,22 @@ class UserApiController extends Controller
 
     private function get_paginated_users($request)
     {
+        $query = User::with('roles')->where('id', '!=', auth()->user()->id);
+
         if ($request->has('sort')) {
             list($sortCol, $sortDir) = explode('|', $request->get('sort'));
-            $query = User::with('role')->orderBy($sortCol, $sortDir)
-                ->where('role_id', '!=', auth()->user()->role_id);
+//            $query = User::with('roles')->orderBy($sortCol, $sortDir);
+            $query = $query->orderBy($sortCol, $sortDir);
+//                ->whereHas('roles', function($query){
+//                    $query->where('id', '!=', auth()->user()->roles->first()->id);
+//                });
+//                ->where('role_id', '!=', auth()->user()->roles->first()->id);
         } else {
-            $query = User::with('role')->orderBy('id', 'asc')
-                ->where('role_id', '!=', auth()->user()->role_id);
+            $query = $query->orderBy('id', 'asc');
+//                ->whereHas('roles', function($query){
+//                    $query->where('id', '!=', auth()->user()->roles->first()->id);
+//                });
+//                ->where('role_id', '!=', auth()->user()->roles->first()->id);
         }
 
         if ($request->exists('filter')) {
@@ -135,8 +144,11 @@ class UserApiController extends Controller
             });
         }
 
-        if(auth()->user()->role_id != 1){
-            $query->where('role_id', '!=', 1);
+        if(auth()->user()->roles->first()->id != 1){
+            $query->whereHas('roles', function($query){
+                $query->where('id', '!=', 1);
+            });
+//            $query->where('role_id', '!=', 1);
         }
 
         $perPage = $request->has('per_page') ? (int) $request->get('per_page') : null;
