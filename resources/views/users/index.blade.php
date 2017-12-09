@@ -49,18 +49,28 @@
                 <div class="form-group" v-show="show_region">
                     <label class="control-label">Region</label>
                     <div>
-                        <select required class="form-control" v-select="newUser.region_id"
-                                :options="regions" style="width: 100%;">
-                        </select>
+                        <v-select
+                                :on-change="fetchDistricts"
+                                :value.sync="newUser.region"
+                                :options="regions"
+                                placeholder="choose region..."
+                                label="name"
+                        >
+                        </v-select>
                     </div>
                 </div>
 
                 <div class="form-group" v-show="show_region">
                     <label class="control-label">District</label>
                     <div>
-                        <select style="width: 100%;" required class="form-control"
-                                v-select="newUser.district_id" :options="districts">
-                        </select>
+                        <v-select
+                                :on-change="fetchLocations"
+                                :value.sync="newUser.district"
+                                :options="districts"
+                                placeholder="choose district..."
+                                label="name"
+                        >
+                        </v-select>
                     </div>
                 </div>
 
@@ -305,8 +315,8 @@
                         full_name: '',
                         date_of_birth: '',
                         role: null,
-                        region_id: '',
-                        district_id: '',
+                        region: '',
+                        district: '',
                         location_id: ''
                     },
                     searchFor: '',
@@ -329,13 +339,28 @@
                     users: []
                 },
                 methods: {
+
+                    fetchDistricts: function(region){
+                        var url = 'internal-api/regions/' + region.id + '/districts?scope=employment';
+                        this.$http.get(url).then(resp => {
+                            this.districts = resp.data
+                        })
+                        // console.log(url);
+                    },
+                    fetchLocations: function(district){
+                        var url = 'internal-api/districts/'+ district.id + '/locations?scope=employment';
+                        this.$http.get(url).then(resp => {
+                            this.locations = resp.data;
+                        })
+                        // console.log(url);
+                    },
                     save_user: function(){
                         $user_form.LoadingOverlay("show", loadingOptions);
                         var full_name = this.newUser.full_name.trim();
                         var date_of_birth = this.newUser.date_of_birth;
                         var role_id = this.newUser.role;
-                        var region_id = this.newUser.region_id;
-                        var district_id = this.newUser.district_id;
+                        var region_id = this.newUser.region ? this.newUser.region.id : null;
+                        var district_id = this.newUser.district ? this.newUser.district.id : null;
                         if(full_name && date_of_birth){
                             var data = new FormData;
                             data.append('full_name', full_name);
