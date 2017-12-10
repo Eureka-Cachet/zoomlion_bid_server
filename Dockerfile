@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 # install supervisor
 RUN         apt-get install -y supervisor && \
             mkdir -p /var/log/supervisor
-COPY        docker/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY        supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # install composer
 RUN         curl -sS https://getcomposer.org/installer | /usr/local/bin/php -- --install-dir=/usr/local/bin --filename=composer
@@ -43,3 +43,7 @@ RUN         mkdir oldBeneficiaries StaffPicture sysImages
 RUN         /usr/local/bin/php /usr/local/bin/composer install
 
 RUN         chown -R www-data ./storage && chmod -R 0770 ./storage
+
+# set container entrypoints
+ENTRYPOINT ["/bin/bash","-c"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
