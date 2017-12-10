@@ -38,7 +38,7 @@ COPY        . /var/www
 
 WORKDIR     /var/www
 
-RUN         mkdir oldBeneficiaries StaffPicture sysImages
+RUN         mkdir oldBeneficiaries StaffPicture sysImages storage
 
 RUN         /usr/local/bin/php /usr/local/bin/composer install
 
