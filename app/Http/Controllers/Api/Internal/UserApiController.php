@@ -49,7 +49,9 @@ class UserApiController extends Controller
     public function all()
     {
         if(request()->get('status') == 'free' && request()->get('role') == 'supervisor'){
-            return response()->json($this->repository->free_supervisor());
+            $free_supervisor = $this->repository->free_supervisor();
+//            dd($free_supervisor);
+            return $free_supervisor;
         }
 
         $paginator = $this->get_paginated_users(request());

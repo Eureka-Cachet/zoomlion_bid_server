@@ -33,4 +33,9 @@ class District extends Model
     {
         return $this->hasManyThrough(Form::class, Location::class, 'district_id', 'location_id', 'id');
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'district_id');
+    }
 }

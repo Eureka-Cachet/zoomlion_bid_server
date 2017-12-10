@@ -150,7 +150,7 @@ class UsersRepository
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return array
      */
     public function free_supervisor()
     {
@@ -158,10 +158,16 @@ class UsersRepository
             ->whereHas('roles', function($query){
                 $query->where('name', "SUPERVISOR");
             })
+//            ->whereHas('device', function($query){
+//                $query->whereNull('device');
+//            })
 //            ->where('role_id', 6)
-            ->get()->filter(function($supervisor){
+            ->get()
+            ->filter(function($supervisor){
                 return is_null($supervisor->device);
-            });
+            })
+            ->values()
+            ->toArray();
     }
 
     public function busy_supervisor()

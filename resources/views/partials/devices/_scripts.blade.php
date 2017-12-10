@@ -201,7 +201,7 @@
                         confirmButton: 'delete'
                     });
                 },
-                showAssitants: function(device){
+                showAssistants: function(device){
                     console.log('show assistants');
                     this.$dispatch('show:assistants', device.assistants);
                 }
@@ -215,12 +215,13 @@
                     }else if(action == 'view-supervisor'){
                         this.loadUserPage(device.supervisor.uuid);
                     }else if(action == 'view-assistants'){
-                        this.showAssitants(device);
+                        this.showAssistants(device);
                     }
                 },
                 'vuetable:load-success': function(res){
                     console.log(res.data.data);
                     this.$set('devices', res.data.data);
+                    this.$dispatch('devices:loaded', res.data.data);
                     if(!_.isEmpty(this.devices)){
                         this.$dispatch('device:changed', this.devices[0]);
                     }
@@ -232,6 +233,9 @@
                 'devices:online': function(devices){
                     console.log('from vuetable for devices  -> ', devices);
                     this.onlineDevices = devices;
+                },
+                'devices:reload': function(){
+                    this.reloadTable();
                 }
             }
         });
@@ -339,11 +343,13 @@
 
                         this.$http.put(url, device).then(function(res){
                             $mapDevice.LoadingOverlay('hide', true);
-                            if(res.status === 200){
-                                $newDevice.modal('hide');
-                                // reload table
-                                return this.notify("Device Mapped", "success", false);
-                            }
+                            this.$broadcast('devices:reload', device);
+                            $newDevice.modal('hide');
+                            return this.notify("Device Mapped", "success", false);
+                            // if(res.status === 200){
+                            //     $newDevice.modal('hide');
+                            //     // reload table
+                            // }
                             console.log(res);
                             this.notify("Operation Failed", "danger", true);
                         }, function(error){
@@ -358,9 +364,21 @@
                     this.$http.get(url).then(
                         function(res){
                             this.$set('supervisors', res.data);
+                            // console.log('sup', res.data);
                         }, 
                         function(error){
-                            console.log(error);
+                            console.log('error', error);
+                        });
+                },
+                fetchAssistants: function(supervisor){
+                    var url = 'internal-api/users?role=supervisor&status=free&under=' + supervisor.id;
+                    this.$http.get(url).then(
+                        function(res){
+                            this.$set('assistants', res.data);
+                            // console.log('sup', res.data);
+                        },
+                        function(error){
+                            console.log('error', error);
                         });
                 },
                 addDevice: function(){
@@ -408,6 +426,11 @@
                 'show:assistants': function(assistants){
                     this.assistants = assistants;
                     $assistantsModal.modal('show');
+                    console.log('assistants', assistants);
+                },
+                'devices:loaded': function(data){
+                    this.$set('devices', data);
+                    console.log('table data from event', data);
                 }
             },
             ready: function(){

@@ -8,8 +8,8 @@ class Device extends Model
 {
     protected $fillable = ['code', 'connected', 'active'];
 
-    public function supervisors(){
-        return $this->hasMany(User::class, 'device_id');
+    public function supervisor(){
+        return $this->hasOne(User::class, 'device_id');
     }
 
     public function clocks()

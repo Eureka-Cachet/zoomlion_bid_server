@@ -43,11 +43,11 @@ class DeviceRepository
     {
         if ($request->has('sort')) {
             list($sortCol, $sortDir) = explode('|', $request->get('sort'));
-            $query = $this->device->with(['clocks', 'supervisors', 'supervisors.location'])
+            $query = $this->device->with(['clocks', 'supervisor', 'supervisor.location'])
                 ->where('active', true)
                 ->orderBy($sortCol, $sortDir);
         } else {
-            $query = $this->device->with(['clocks', 'supervisors', 'supervisors.location'])
+            $query = $this->device->with(['clocks', 'supervisor', 'supervisor.location'])
                 ->where('active', true)
                 ->orderBy('id', 'asc');
         }
@@ -162,10 +162,7 @@ class DeviceRepository
      */
     public function get_device_location($device_id)
     {
-        $location = $this->get_device_by_code($device_id)->supervisors->filter(function ($s) {
-            return $s->assistant == false;
-        })->first()->district;
-//        dd($location);
+        $location = $this->get_device_by_code($device_id)->supervisor->district;
         return $location;
     }
 
@@ -175,7 +172,7 @@ class DeviceRepository
      */
     public function get_device_by_code($device_id)
     {
-        return $this->device->with('supervisors', 'supervisors.location')
+        return $this->device->with('supervisor', 'supervisor.location')
             ->where('code', $device_id)
             ->first();
     }

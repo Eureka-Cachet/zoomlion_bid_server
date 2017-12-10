@@ -98,7 +98,7 @@
                 <div>
                     <v-select
                         :value.sync="supervisor"
-                        :options="supervisors"
+                        :options="selectedDevice.free_assistants"
                         placeholder="select supervisor"
                         label="full_name"
                     >
@@ -137,7 +137,7 @@
                 </tr>
             </thead>
             <tbody align="center">
-                <tr v-for="assistant in assistants">
+                <tr v-for="assistant in selectedDevice.assistants">
                     <td valign="middle">@{{ assistant.full_name }}</td>
                     <td>
                         <span class="tooltip-area">
