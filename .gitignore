@@ -6,9 +6,6 @@
 /socket/node_modules
 #/resources/assets
 /docker
-#.env
-.local.env
-.production.env
 #.docker
 docker-compose.yml
 #docker-compose.production.yml
