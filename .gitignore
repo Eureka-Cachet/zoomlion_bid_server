@@ -1,10 +1,8 @@
 .idea
 /vendor
 /node_modules
-/storage
 /StaffPicture
 /socket/node_modules
-#/resources/assets
 /docker
 #.docker
 docker-compose.yml
