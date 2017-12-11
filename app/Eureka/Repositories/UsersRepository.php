@@ -10,6 +10,7 @@ namespace Eureka\Repositories;
 
 
 use clocking\Device;
+use clocking\Role;
 use clocking\User;
 use Carbon\Carbon;
 use Webpatser\Uuid\Uuid;
@@ -215,7 +216,7 @@ class UsersRepository
 
         $user = $this->user
             ->where(['pin' => $pin])
-            ->whereIn('role_id', [6, 1])
+//            ->whereIn('role_id', [6, 2, 1])
             ->first();
         if(!$user) return null;
 
