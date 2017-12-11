@@ -1,7 +1,10 @@
 .idea
 /vendor
 /node_modules
-/storage
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
+storage/docker/redis/**
 /StaffPicture
 /socket/node_modules
 #/resources/assets
