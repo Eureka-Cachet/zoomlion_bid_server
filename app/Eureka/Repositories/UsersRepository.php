@@ -212,23 +212,17 @@ class UsersRepository
         $device = $this->get_device($device_id);
         if(!$device) return null;
 
-        $supervisors = $device->supervisors;
-
-        $user = $this->user
-            ->where(['pin' => $pin])
-//            ->whereIn('role_id', [6, 2, 1])
-            ->first();
+        $user = User::with('roles')->where('pin', $pin)->first();
         if(!$user) return null;
 
-        if(collect($supervisors)->isEmpty() && $user->roles->first()->id != 1) return null;
+        $supervisor = $device->supervisor;
+        if($supervisor->id == $user->id){
+            return $supervisor;
+        }
 
-        $found = collect($supervisors)->filter(function($sup) use ($user) {
-            return $sup->id == $user->id;
+        return $supervisor->assistants->filter(function(User $ass) use ($user){
+            return $ass->id == $user->id;
         })->first();
-
-        if(! $found && $user->roles->first()->id != 1) return null;
-
-        return $user;
     }
 
     /**
@@ -237,7 +231,7 @@ class UsersRepository
      */
     public function get_device($code)
     {
-        $device = Device::with('supervisors')->where('code', $code)->first();
+        $device = Device::with('supervisor')->where('code', $code)->first();
         return $device;
     }
 }
