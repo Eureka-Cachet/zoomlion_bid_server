@@ -62,7 +62,7 @@ class AppAuthController extends Controller
         //dispatch supervisor login event
         $log_uuid = $this->updateHistoryLogsForConnect($user);
         return $this->respondForAuth('success', '200', 'login successful',
-            $token, $user->uuid, $log_uuid, $user->role->id);
+            $token, $user->uuid, $log_uuid, $user->roles->first()->id);
     }
 
     /**
@@ -134,7 +134,7 @@ class AppAuthController extends Controller
         $now = Carbon::now();
         $log = DeviceHistory::where("uuid", $log_uuid)->first();
 
-        if($user->role->id == 1){
+        if($user->roles->first()->id == 1){
             $log->update(["disconnected_time" => $now]);
             return true;
         }
