@@ -10,6 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class BeneficiaryWasCreated extends Event implements ShouldQueue, ShouldBroadcast
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var Beneficiary

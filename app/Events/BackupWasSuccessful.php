@@ -10,6 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class BackupWasSuccessful extends Event implements ShouldBroadcast, ShouldQueue
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var DbBackup

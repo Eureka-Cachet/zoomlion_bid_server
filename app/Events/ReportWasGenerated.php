@@ -10,6 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class ReportWasGenerated extends Event implements ShouldBroadcast
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var

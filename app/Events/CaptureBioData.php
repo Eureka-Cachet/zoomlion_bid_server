@@ -9,6 +9,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class CaptureBioData extends Event implements ShouldBroadcast, ShouldQueue
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var

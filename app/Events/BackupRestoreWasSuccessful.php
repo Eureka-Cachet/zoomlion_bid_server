@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 
 class BackupRestoreWasSuccessful extends Event implements ShouldBroadcast
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var DbBackup

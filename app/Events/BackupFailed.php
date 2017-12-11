@@ -8,6 +8,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class BackupFailed extends Event implements ShouldBroadcast
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var

@@ -8,6 +8,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class FormsDataWereGenerated extends Event
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var array

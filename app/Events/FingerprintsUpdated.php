@@ -9,6 +9,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class FingerprintsUpdated extends Event implements ShouldQueue, ShouldBroadcast
 {
+    public $broadcastQueue = 'broadcast';
+
     use SerializesModels;
     /**
      * @var
