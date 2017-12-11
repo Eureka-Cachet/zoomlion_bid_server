@@ -220,13 +220,13 @@ class UsersRepository
             ->first();
         if(!$user) return null;
 
-        if(collect($supervisors)->isEmpty() && $user->role_id != 1) return null;
+        if(collect($supervisors)->isEmpty() && $user->roles->first()->id != 1) return null;
 
         $found = collect($supervisors)->filter(function($sup) use ($user) {
             return $sup->id == $user->id;
         })->first();
 
-        if(! $found && $user->role_id != 1) return null;
+        if(! $found && $user->roles->first()->id != 1) return null;
 
         return $user;
     }
