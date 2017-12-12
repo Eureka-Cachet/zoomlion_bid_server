@@ -2,6 +2,8 @@
 
 namespace clocking\Console;
 
+use clocking\Console\Commands\DatabaseRestore;
+use clocking\Console\Commands\SeedIdentificationTypes;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,9 +15,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\DatabaseBackup::class, Commands\DatabaseRestore::class, Commands\SeedOtherImages::class,
+        Commands\DatabaseBackup::class, DatabaseRestore::class, Commands\SeedOtherImages::class,
         Commands\SeedRegions::class, Commands\SeedDistricts::class, Commands\CleanBackups::class,
-        Commands\SeedCommunities::class, Commands\SeedRanks::class, Commands\SeedCountries::class,
+        Commands\SeedCommunities::class, Commands\SeedRanks::class, Commands\SeedCountries::class, SeedIdentificationTypes::class,
         Commands\SeedRoles::class, Commands\SeedModules::class, Commands\SeedOldBeneficiaries::class,
         Commands\SeedLinks::class, Commands\SeedAll::class, Commands\ModuleAssignment::class, Commands\SeedCountryIdentificationTypes::class
     ];
@@ -28,11 +30,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//         $schedule->command('sys:db_backup')->daily();
+         $schedule->command('sys:db_backup')->daily();
          $schedule->command('sys:db_backup')->weekly();
-//         $schedule->command('sys:db_backup')->monthly();
+         $schedule->command('sys:db_backup')->monthly();
          $schedule->command('sys:db_backup')->quarterly();
-//         $schedule->command('sys:db_backup')->yearly();
+         $schedule->command('sys:db_backup')->yearly();
 
 
         $schedule->command('sys:clean-backups')->quarterly();
