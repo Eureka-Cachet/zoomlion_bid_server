@@ -3,6 +3,7 @@
 namespace clocking\Http\Middleware;
 
 use Closure;
+use Eureka\Helpers\Constants;
 
 class OnlyAudit
 {
@@ -15,7 +16,7 @@ class OnlyAudit
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->roles->first()->id != 3){
+        if(auth()->user()->roles->first()->id != Constants::AUDIT_ROLE){
             abort(404);
         }
         return $next($request);

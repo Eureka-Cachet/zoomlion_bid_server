@@ -3,6 +3,7 @@
 namespace clocking\Http\Middleware;
 
 use Closure;
+use Eureka\Helpers\Constants;
 
 class OnlyManagement
 {
@@ -15,7 +16,7 @@ class OnlyManagement
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->roles->first()->id != 8){
+        if(auth()->user()->roles->first()->id != Constants::MANAGEMENT_ROLE){
             abort(404);
         }
         return $next($request);

@@ -3,6 +3,7 @@
 namespace clocking\Http\Middleware;
 
 use Closure;
+use Eureka\Helpers\Constants;
 
 class BeneficiariesMiddleware
 {
@@ -17,7 +18,7 @@ class BeneficiariesMiddleware
     {
         $role_id = auth()->user()->roles->first()->id;
         if(
-        !collect([1, 2])->contains($role_id)
+        !collect([Constants::OPERATION_ROLE, Constants::SYSADMIN_ROLE, Constants::ADMIN_ROLE])->contains($role_id)
         ){
             if($request->ajax() || $request->wantsJson()){
                 return response('Unauthorized.', 401);

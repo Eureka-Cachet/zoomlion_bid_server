@@ -3,6 +3,7 @@
 namespace clocking\Http\Middleware;
 
 use Closure;
+use Eureka\Helpers\Constants;
 
 class SettingsMiddleware
 {
@@ -17,7 +18,7 @@ class SettingsMiddleware
     {
         $role_id = auth()->user()->roles->first()->id;
         if(
-        !collect([1])->contains($role_id)
+        !collect([Constants::SYSADMIN_ROLE])->contains($role_id)
         ){
             if($request->ajax() || $request->wantsJson()){
                 return response('Unauthorized.', 401);

@@ -3,6 +3,7 @@
 namespace clocking\Http\Middleware;
 
 use Closure;
+use Eureka\Helpers\Constants;
 
 class OnlyIT
 {
@@ -15,7 +16,7 @@ class OnlyIT
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()->roles->first()->id != 5){
+        if(auth()->user()->roles->first()->id != Constants::IT_ROLE){
             abort(404);
         }
         return $next($request);
