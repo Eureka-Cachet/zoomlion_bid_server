@@ -343,6 +343,7 @@
                     this.capturingBioData = false;
                     this.reviewingBioData = true;        
 
+                    console.log("enrollment data", data);
                     console.log(data.thumb_right);
 
                     this.thumbRight.encoded = data.thumb_right.encoded;
