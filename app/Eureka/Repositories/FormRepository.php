@@ -33,13 +33,24 @@ class FormRepository
         return $this->form->orderBy('id', 'desc')->first();
     }
 
+    /**
+     * @param $bid
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     */
     public function check($bid){
-        return $this->form->with(['rank', 'module', 'module.location',
+        $bid = $this->form->with(['rank', 'module', 'module.location',
             'module.location.district',
             'module.location.district.region',
             'module.department'])
             ->where(['enrolled' => 0, 'code' => $bid])
             ->first();
+
+        $user_district = auth()->user()->district;
+        $bid_district = $bid->module->location->district;
+
+        if(!$user_district) return null;
+
+        return $bid_district->id == $user_district->id ? $bid : null;
     }
 
     /**
