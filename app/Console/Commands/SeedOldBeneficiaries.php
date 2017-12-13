@@ -112,7 +112,7 @@ class SeedOldBeneficiaries extends Command
         $filename = $this->argument('name');
         try {
             $file_path = $this->get_file($filename);
-            dispatch(new UploadOldBeneficiaries($file_path));
+            $this->upload($file_path);
             $this->info("things were successful");
         } catch (\Exception $e) {
             $this->error("Error Occurred " . $e->getMessage());
@@ -126,7 +126,7 @@ class SeedOldBeneficiaries extends Command
             $files = $this->get_files_from($folder_name);
             foreach ($files as $file) {
                 $file_path = $this->get_file($file, $folder_name);
-                dispatch(new UploadOldBeneficiaries($file_path));
+                $this->upload($file_path);
             }
             $this->info("things were successful");
         } catch (\Exception $e) {
