@@ -63,7 +63,7 @@ class SeedModules extends Command
     {
         return [
             [
-                'name' => 'GYEEDA',
+                'name' => 'YEA',
                 'code' => '01'
             ],
             [
