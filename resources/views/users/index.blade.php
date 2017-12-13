@@ -24,14 +24,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Date of Birth</label>
+                    <label class="control-label">Email</label>
                     <div>
-                        <div class="input-icon right"> <i class="fa fa-calendar ico "></i>
-                            <input v-model="newUser.date_of_birth"
-                                   required type="text" class="form-control"
-                                   data-mask="99/99/9999"
-                                   name="date_of_birth">
-                            <span class="help-block"><a style="color: #29166f" href="#">eg: mm/dd/yyyy</a> <i style="color: #29166f" class="fa fa-info"></i></span>
+                        <div class="input-icon right"> <i class="fa fa-mail ico "></i>
+                            <input v-model="newUser.email"
+                                   required type="email" class="form-control"
+                                   name="username">
+                            {{--<span class="help-block"><a style="color: #29166f" href="#">eg: mm/dd/yyyy</a> <i style="color: #29166f" class="fa fa-info"></i></span>--}}
                         </div>
                     </div>
                 </div>
@@ -313,7 +312,7 @@
                     showing_region: true,
                     newUser: {
                         full_name: '',
-                        date_of_birth: '',
+                        email: '',
                         role: null,
                         region: '',
                         district: '',
@@ -357,14 +356,14 @@
                     save_user: function(){
                         $user_form.LoadingOverlay("show", loadingOptions);
                         var full_name = this.newUser.full_name.trim();
-                        var date_of_birth = this.newUser.date_of_birth;
+                        var email = this.newUser.email;
                         var role_id = this.newUser.role;
                         var region_id = this.newUser.region ? this.newUser.region.id : null;
                         var district_id = this.newUser.district ? this.newUser.district.id : null;
-                        if(full_name && date_of_birth){
+                        if(full_name && email){
                             var data = new FormData;
                             data.append('full_name', full_name);
-                            data.append('date_of_birth', date_of_birth);
+                            data.append('username', email);
                             data.append('role_id', role_id);
                             data.append('_token', '{{ csrf_token() }}');
 

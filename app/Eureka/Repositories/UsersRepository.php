@@ -105,7 +105,7 @@ class UsersRepository
         $data_to_save = array_add($payload->only(['role_id', 'region_id', 'district_id'])->toArray(),
             'date_of_birth', Carbon::parse($payload->get('date_of_birth')));
         $data_to_save = array_add($data_to_save, 'full_name', ucwords($payload->get('full_name')));
-        $data_to_save = array_add($data_to_save, 'username', $this->get_username($payload->get('full_name')));
+        $data_to_save = array_add($data_to_save, 'username', $payload->get('username'));
         $data_to_save = array_add($data_to_save, 'password', $this->get_default_password());
         $data_to_save = array_add($data_to_save, 'uuid', $this->get_uuid());
         return $data_to_save;
