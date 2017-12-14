@@ -73,17 +73,17 @@
                     </div>
                 </div>
 
-                <div class="form-group" v-show="show_pin">
-                    <label class="control-label">Device PIN</label>
-                    <div>
-                        <div class="input-icon right"> <i class="fa fa-mail ico "></i>
-                            <input v-model="newUser.pin"
-                                   required type="text" class="form-control"
-                                   name="pin">
+                {{--<div class="form-group" v-show="show_pin">--}}
+                    {{--<label class="control-label">Device PIN</label>--}}
+                    {{--<div>--}}
+                        {{--<div class="input-icon right"> <i class="fa fa-mail ico "></i>--}}
+                            {{--<input v-model="newUser.pin"--}}
+                                   {{--required type="text" class="form-control"--}}
+                                   {{--name="pin">--}}
                             {{--<span class="help-block"><a style="color: #29166f" href="#">eg: mm/dd/yyyy</a> <i style="color: #29166f" class="fa fa-info"></i></span>--}}
-                        </div>
-                    </div>
-                </div>
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
 
                 {{--<div class="form-group" v-show="show_location">--}}
                 {{--<label class="control-label">Location</label>--}}
@@ -322,11 +322,7 @@
                     show_pin: function(){
                         var role_id = this.newUser.role;
                         console.log('selected role', role_id);
-                        if(role_id === "2" || role_id === "6"){
-                            return true;
-                        }else{
-                            return false;
-                        }
+                        return role_id === "2" || role_id === "6";
                     }
                 },
                 data: {
