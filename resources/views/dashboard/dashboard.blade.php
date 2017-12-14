@@ -121,7 +121,7 @@
             var $content = $('#content');
 
             var host = window.location.host;
-            var socket = io.connect('https://' + host + ':6001', {secure: true});
+            var socket = io.connect('http://' + host + ':6001');
 
             new Vue({
                 el: '#main-content',
