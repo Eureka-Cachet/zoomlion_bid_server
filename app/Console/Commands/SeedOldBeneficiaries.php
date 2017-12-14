@@ -130,6 +130,7 @@ class SeedOldBeneficiaries extends Command
             }
             $this->info("things were successful");
         } catch (\Exception $e) {
+            var_dump($e->getTraceAsString());
             $this->error("Error Occurred " . $e->getMessage());
         }
     }
@@ -170,7 +171,7 @@ class SeedOldBeneficiaries extends Command
             });
             $this->info("finished uploading -> {$file_name}");
         } catch (\Exception $e){
-            $this->error("Error just popped : {$e->getMessage()}");
+            var_dump($e->getTraceAsString());
             throw new $e;
         }
     }

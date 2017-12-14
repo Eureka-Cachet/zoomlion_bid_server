@@ -7,7 +7,7 @@
         Vue.component('v-select', VueSelect.VueSelect);
 
         var host = window.location.host;
-        var socket = io.connect('https://' + host + ':6001');
+        var socket = io.connect('https://' + host + ':6001', {secure: true});
 
         var $mapDevice = $('#mapDevice'),
                 $newDevice = $('#newDevice'),

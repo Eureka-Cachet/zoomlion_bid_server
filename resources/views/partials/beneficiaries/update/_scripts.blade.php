@@ -9,8 +9,8 @@
         var userUUID = "{{auth()->user()->uuid}}";
 
         var host = window.location.host;
-        var socket = io.connect('https://' + host + ':6001');
-        var enrolmentSocket = io.connect('https://' + host + ':6001/enrolment');
+        var socket = io.connect('https://' + host + ':6001', {secure: true});
+        var enrolmentSocket = io.connect('https://' + host + ':6001/enrolment', {secure: true});
 
         var channel = 'staff_'+"{{auth()->user()->uuid}}_channel:CaptureBioData";
         var captureBioEvent = "{{auth()->user()->uuid}}:CaptureBioDataUpdate";
