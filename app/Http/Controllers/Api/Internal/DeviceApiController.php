@@ -49,11 +49,20 @@ class DeviceApiController extends Controller
     public function all()
     {
         if(request()->get('status') == 'inactive'){
-            return response()->json($this->repository->get_inactive_devices())->setStatusCode(200);
+            return response()->json($this->repository->get_inactive_dev())->setStatusCode(200);
         }
+
+        if(request()->get('status') == 'active'){
+            return response()->json($this->repository->get_active_dev())->setStatusCode(200);
+        }
+
+        if(request()->get('status') == 'all'){
+            return response()->json($this->repository->get_all_dev())->setStatusCode(200);
+        }
+
         $active_devices = $this->repository->get_active_devices(request());
         $resource = new Collection($active_devices, new DeviceCollectionTransformer);
-//        $resource->setPaginator(new IlluminatePaginatorAdapter($active_devices));
+
         $transformed_data = $this->manager
             ->createData($resource)
             ->toArray()["data"];

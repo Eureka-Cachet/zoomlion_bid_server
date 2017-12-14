@@ -344,7 +344,7 @@
                         this.$http.put(url, device).then(function(res){
                             $mapDevice.LoadingOverlay('hide', true);
                             this.$broadcast('devices:reload', device);
-                            $newDevice.modal('hide');
+                            $mapDevice.modal('hide');
                             return this.notify("Device Mapped", "success", false);
                             // if(res.status === 200){
                             //     $newDevice.modal('hide');
@@ -407,8 +407,8 @@
                 mapDeviceAssistance: function(){
                     
                 },
-                fetchInactiveDevices: function(){
-                    this.$http.get("internal-api/devices?status=inactive").then(function(res){
+                fetchAllDevices: function(){
+                    this.$http.get("internal-api/devices?status=all").then(function(res){
                         console.log(res.data);
                         this.devices = res.data;
                     }, function(er){console.log(er)})
@@ -440,7 +440,7 @@
                     this.$broadcast('devices:online', data);
                 }.bind(this));
                 this.fetchSupervisors();
-                this.fetchInactiveDevices();
+                this.fetchAllDevices();
             }
         });
     })

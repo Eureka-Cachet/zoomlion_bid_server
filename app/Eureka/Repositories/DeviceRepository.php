@@ -41,14 +41,15 @@ class DeviceRepository
      */
     public function get_active_devices(Request $request)
     {
+        $query = $this->device->with(['clocks', 'supervisor', 'supervisor.location'])
+            ->where('active', true);
+
         if ($request->has('sort')) {
             list($sortCol, $sortDir) = explode('|', $request->get('sort'));
-            $query = $this->device->with(['clocks', 'supervisor', 'supervisor.location'])
-                ->where('active', true)
+            $query
                 ->orderBy($sortCol, $sortDir);
         } else {
-            $query = $this->device->with(['clocks', 'supervisor', 'supervisor.location'])
-                ->where('active', true)
+            $query
                 ->orderBy('id', 'asc');
         }
 
@@ -100,13 +101,22 @@ class DeviceRepository
 
     /**
      * @param array $payload
-     * @return DeviceMapping
      */
     public function map_new_device(array $payload)
     {
         $user = User::find($payload["user_id"]);
-        $user->update(["device_id" => $payload["device_id"]]);
-        $this->device->find($payload["device_id"])->update(["active" => true]);
+        $device = $this->device->find($payload["device_id"]);
+
+
+        if($this->device_has_same_supervisor($device, $user)) return;
+//        dd($this->device_has_same_supervisor($device, $user));
+//
+        if($this->device_is_busy($device)) {
+            $this->remove_old_supervisor($device);
+        }
+
+        $user->update(["device_id" => $device->id]);
+        $device->update(["active" => true]);
     }
 
     /**
@@ -151,9 +161,25 @@ class DeviceRepository
     /**
      * @return mixed
      */
-    public function get_inactive_devices()
+    public function get_inactive_dev()
     {
         return $this->device->where("active", false)->get();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_active_dev()
+    {
+        return $this->device->where("active", true)->get();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function get_all_dev()
+    {
+        return $this->device->all();
     }
 
     /**
@@ -175,5 +201,32 @@ class DeviceRepository
         return $this->device->with('supervisor', 'supervisor.location')
             ->where('code', $device_id)
             ->first();
+    }
+
+    /**
+     * @param $device
+     * @return mixed
+     */
+    private function device_is_busy($device)
+    {
+        return $device->active && $device->supervisor;
+    }
+
+    private function remove_old_supervisor($device)
+    {
+        $device->supervisor->update(["device_id" => null]);
+        $this->remove_device($device->id);
+    }
+
+    /**
+     * @param $device
+     * @param $user
+     * @return bool
+     */
+    private function device_has_same_supervisor($device, $user)
+    {
+        $supervisor = $device->supervisor;
+        if(! $supervisor) return false;
+        return $supervisor->id == $user->id;
     }
 }
