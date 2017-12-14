@@ -13,6 +13,7 @@ use clocking\Device;
 use clocking\Role;
 use clocking\User;
 use Carbon\Carbon;
+use Eureka\Helpers\Constants;
 use Webpatser\Uuid\Uuid;
 
 class UsersRepository
@@ -50,7 +51,7 @@ class UsersRepository
         $attributes = $this->prepare_payload($payload);
         $user = $this->user
             ->create(array_except($attributes, 'role_id'));
-        $user->roles()->attach($attributes['role_id']);
+        $user->roles()->attach($payload['role_id']);
         return $user;
     }
 
@@ -77,6 +78,17 @@ class UsersRepository
             if(!$user->update(['active' => $payload['active']])){
                 return false;
             }
+        }elseif ($type == 'supervisor'){
+            $user = $this->get_user_by_uuid($uuid);
+            if($payload['supervisor']){
+                $user->roles()->attach(Constants::SUPERVISOR_ROLE);
+            }else{
+                $user->roles()->detach(Constants::SUPERVISOR_ROLE);
+                if($user->device){
+                    $user->device->update(['active' => false]);
+                    $user->update(['device_id' => null]);
+                }
+            }
         }
         return true;
     }
@@ -102,7 +114,7 @@ class UsersRepository
     private function prepare_payload(array $payload)
     {
         $payload = collect($payload);
-        $data_to_save = array_add($payload->only(['role_id', 'region_id', 'district_id'])->toArray(),
+        $data_to_save = array_add($payload->only(['pin', 'role_id', 'region_id', 'district_id'])->toArray(),
             'date_of_birth', Carbon::parse($payload->get('date_of_birth')));
         $data_to_save = array_add($data_to_save, 'full_name', ucwords($payload->get('full_name')));
         $data_to_save = array_add($data_to_save, 'username', $payload->get('username'));

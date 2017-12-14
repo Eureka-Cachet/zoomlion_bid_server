@@ -73,6 +73,18 @@
                     </div>
                 </div>
 
+                <div class="form-group" v-show="show_pin">
+                    <label class="control-label">Device PIN</label>
+                    <div>
+                        <div class="input-icon right"> <i class="fa fa-mail ico "></i>
+                            <input v-model="newUser.pin"
+                                   required type="text" class="form-control"
+                                   name="pin">
+                            {{--<span class="help-block"><a style="color: #29166f" href="#">eg: mm/dd/yyyy</a> <i style="color: #29166f" class="fa fa-info"></i></span>--}}
+                        </div>
+                    </div>
+                </div>
+
                 {{--<div class="form-group" v-show="show_location">--}}
                 {{--<label class="control-label">Location</label>--}}
                 {{--<div>--}}
@@ -306,6 +318,15 @@
                                     return false;
                                 }
                             }
+                    },
+                    show_pin: function(){
+                        var role_id = this.newUser.role;
+                        console.log('selected role', role_id);
+                        if(role_id === "2" || role_id === "6"){
+                            return true;
+                        }else{
+                            return false;
+                        }
                     }
                 },
                 data: {
@@ -316,7 +337,8 @@
                         role: null,
                         region: '',
                         district: '',
-                        location_id: ''
+                        location_id: '',
+                        pin: ''
                     },
                     searchFor: '',
                     fields: tableColumns,
@@ -358,6 +380,7 @@
                         var full_name = this.newUser.full_name.trim();
                         var email = this.newUser.email;
                         var role_id = this.newUser.role;
+                        var pin = this.newUser.pin;
                         var region_id = this.newUser.region ? this.newUser.region.id : null;
                         var district_id = this.newUser.district ? this.newUser.district.id : null;
                         if(full_name && email){
@@ -370,12 +393,14 @@
                             if(role_id == 2){
                                 data.append('region_id', region_id);
                                 data.append('district_id', district_id);
+                                data.append('pin', pin);
                             }else if(role_id == 4){
                                 data.append('region_id', region_id);
                                 data.append('district_id', district_id);
                             }else if(role_id == 6){
                                 data.append('region_id', region_id);
                                 data.append('district_id', district_id);
+                                data.append('pin', pin);
                             }
 
                             this.$http.post('internal-api/users', data).then(

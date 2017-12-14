@@ -18,10 +18,20 @@
                             <div class="col-md-6">
                                 <h4>Profile</h4>
                             </div>
-                            @if(auth()->user()->id != $user->id OR (auth()->user()->roles->first()->id == 1 AND auth()->user()->id != $user->id))
-                                <div class="col-md-6 text-right">
+                            @if(auth()->user()->id != $user->id OR (auth()->user()->roles->first()->id == \Eureka\Helpers\Constants::SYSADMIN_ROLE AND auth()->user()->id != $user->id))
+                                @if($user->roles->first()->id == \Eureka\Helpers\Constants::OPERATION_ROLE)
+                                <div class="col-md-3 text-right">
+                                    <button @click="canHaveDevice" class="btn btn-sm" v-if="!user.is_supervisor">
+                                        Can Have Device
+                                    </button>
+                                    <button @click="cannotHaveDevice" class="btn btn-sm" v-if="user.is_supervisor">
+                                        Cannot Have Device
+                                    </button>
+                                </div>
+                                @endif
+                                <div class="col-md-3 text-right">
                                     <button @click="deactivateUser" class="btn btn-sm" v-if="user.active">Deactivate</button>
-                                    <button @click="activateUser" class="btn btn-sm" v-if="!user.active">Activate</button>
+                                    <button @click="activateUser" class="btn btn-sm" v-else>Activate</button>
                                 </div>
                             @endif
                         </header>
@@ -123,6 +133,48 @@
                 user: {}
             },
             methods: {
+                canHaveDevice: function(){
+                    $.confirm({
+                        title: "Are You Sure?",
+                        content: false,
+                        confirm: function(){
+                            $profilePanel.LoadingOverlay('show', loadingOptions);
+                            var url = "{!! route('api.user.update', ['id' => $user->uuid]) !!}";
+                            var data = {type: 'supervisor', '_token': "{!! csrf_token() !!}", supervisor: true};
+                            this.$http.post(url, data).then(function(res){
+                                $profilePanel.LoadingOverlay('hide');
+                                if(res.data.success){
+                                    this.user.is_supervisor = true;
+                                    $.alert('User Can Have Device!')
+                                }
+                            }, function(res){
+                                $.alert('Operation Failed!')
+                            });
+                        }.bind(this),
+                        confirmButton: "Yes"
+                    });
+                },
+                cannotHaveDevice: function(){
+                    $.confirm({
+                        title: "Are You Sure?",
+                        content: false,
+                        confirm: function(){
+                            $profilePanel.LoadingOverlay('show', loadingOptions);
+                            var url = "{!! route('api.user.update', ['id' => $user->uuid]) !!}";
+                            var data = {type: 'supervisor', '_token': "{!! csrf_token() !!}", supervisor: false};
+                            this.$http.post(url, data).then(function(res){
+                                $profilePanel.LoadingOverlay('hide');
+                                if(res.data.success){
+                                    this.user.is_supervisor = false;
+                                    $.alert('User Cannot Have Device!')
+                                }
+                            }, function(res){
+                                $.alert('Operation Failed!')
+                            });
+                        }.bind(this),
+                        confirmButton: "Yes"
+                    });
+                },
                 changePassword: function(){
                     $profilePanel.LoadingOverlay('show', loadingOptions);
                     var oldPass = this.oldPassword.trim(),

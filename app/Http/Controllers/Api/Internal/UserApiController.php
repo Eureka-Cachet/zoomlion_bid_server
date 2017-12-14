@@ -14,11 +14,13 @@ use clocking\Http\Controllers\Controller;
 use clocking\User;
 use Eureka\Repositories\DeviceRepository;
 use Eureka\Repositories\UsersRepository;
+use Eureka\Transformers\Internal\UserCollectionTransformer;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use League\Fractal\Manager;
+use League\Fractal\Resource\Item;
 
 class UserApiController extends Controller
 {
@@ -62,7 +64,10 @@ class UserApiController extends Controller
 
     public function single($id)
     {
-        return $this->repository->single_user($id);
+        $user = $this->repository->single_user($id);
+        $user = $this->fractal->createData(new Item($user, new UserCollectionTransformer))->toArray();
+//        dd($user['data']);
+        return $user['data'];
     }
 
     public function add(Request $request)
