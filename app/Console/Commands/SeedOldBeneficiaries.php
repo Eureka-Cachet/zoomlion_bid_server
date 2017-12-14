@@ -138,7 +138,7 @@ class SeedOldBeneficiaries extends Command
     {
         $this->info("started uploading -> {$file_name}");
         try{
-            Excel::load($file_name, function($reader){
+            Excel::load($file_name, function($reader) use ($file_name){
 
                 $reader->all()->map(function ($row) {
                     return [
@@ -156,7 +156,8 @@ class SeedOldBeneficiaries extends Command
                         "uuid" => CodeGenerator::uuid()
                     ];
                 })
-                    ->each(function($b){
+                    ->each(function($b) use ($file_name){
+                        $this->info("creating Beneficiary with BID -> {$b['bid']}");
                         $beneficiary = Beneficiary::create($b);
                         $path_and_encoded = $this->get_path_and_encoded($beneficiary);
 
@@ -164,10 +165,12 @@ class SeedOldBeneficiaries extends Command
                             'path' => $path_and_encoded["path"],
                             'encoded' => $path_and_encoded["encoded"]
                         ]);
+                        $this->info("done creating -> {$b['bid']}");
                     });
             });
             $this->info("finished uploading -> {$file_name}");
         } catch (\Exception $e){
+            $this->error("Error just popped : {$e->getMessage()}");
             throw new $e;
         }
     }
