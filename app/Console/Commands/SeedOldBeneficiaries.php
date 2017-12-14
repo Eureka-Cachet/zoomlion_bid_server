@@ -171,7 +171,8 @@ class SeedOldBeneficiaries extends Command
             });
             $this->info("finished uploading -> {$file_name}");
         } catch (\Exception $e){
-            var_dump($e->getTraceAsString());
+            var_dump($e->getMessage());
+            var_dump($e->getTrace());
             throw new $e;
         }
     }
