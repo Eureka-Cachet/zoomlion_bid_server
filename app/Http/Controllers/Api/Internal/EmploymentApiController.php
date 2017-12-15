@@ -42,20 +42,20 @@ class EmploymentApiController extends Controller
      */
     public function generate_form(Request $request)
     {
-        $number_to_generate = $request->get('number_of_form');
-        $forms = $this->generate_them($number_to_generate, auth()->user(), $request);
-        return $forms;
-//        try{
-//            $this->dispatch(new BuildApplicantForm($request->all(), auth()->user()));
+//        $number_to_generate = $request->get('number_of_form');
+//        $forms = $this->generate_them($number_to_generate, auth()->user(), $request);
+//        return $forms;
+        try{
+            $this->dispatch(new BuildApplicantForm($request->all(), auth()->user()));
 
-//            $number_to_generate = $request->get('number_of_form');
-//            $forms = $this->generate_them($number_to_generate, auth()->user(), $request);
-//            return $forms;
+            $number_to_generate = $request->get('number_of_form');
+            $forms = $this->generate_them($number_to_generate, auth()->user(), $request);
+            return $forms;
 
-//            return $this->onSuccessRequest();
-//        }catch (\Exception $e){
-//            return $this->onFailedRequest($e->getMessage());
-//        }
+            return $this->onSuccessRequest();
+        }catch (\Exception $e){
+            return $this->onFailedRequest($e->getMessage());
+        }
     }
 
     private function generate_them($number_to_generate, $generator, $request)
