@@ -47,11 +47,6 @@ class EmploymentApiController extends Controller
 //        return $forms;
         try{
             $this->dispatch(new BuildApplicantForm($request->all(), auth()->user()));
-
-            $number_to_generate = $request->get('number_of_form');
-            $forms = $this->generate_them($number_to_generate, auth()->user(), $request);
-            return $forms;
-
             return $this->onSuccessRequest();
         }catch (\Exception $e){
             return $this->onFailedRequest($e->getMessage());
