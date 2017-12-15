@@ -13,7 +13,8 @@ WORKDIR     /var/www
 # add entry to crontab
 RUN         (crontab -l 2>/dev/null; echo "* * * * * /usr/local/bin/php artisan schedule:run >> /dev/null 2>&1")| crontab -
 
-RUN         mkdir oldBeneficiaries StaffPicture sysImages
+RUN         mkdir oldBeneficiaries StaffPicture sysImages storage/logs
+RUN         touch storage/logs/worker.log storage/logs/broadcast-worker.log
 
 RUN         /usr/local/bin/php /usr/local/bin/composer install
 
