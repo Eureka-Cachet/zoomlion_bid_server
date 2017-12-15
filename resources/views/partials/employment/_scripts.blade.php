@@ -80,10 +80,10 @@
                                 $newForm.LoadingOverlay('show', loadingOptions);
                                 return ;
                             }
-                            $.alert("Error in generating the form. Please Try Again with Correct Information!");
+                            // $.alert("Error in generating the form. Please Try Again with Correct Information!");
                         }, function(error){
                             if(error.status === 401) return window.location.reload(true);
-                            
+                            console.log(error);
                             $.LoadingOverlay('hide');
                             $.alert("Error in generating the form. Please Try Again with Correct Information!");
                         });
