@@ -68,13 +68,13 @@ class AddNewBeneficiary extends Job implements ShouldQueue
             $this->save_picture($beneficiary);
 
             event(new FingerprintsUpdated($this->getAllFingerprints(), "FINGERPRINTS:UPDATED"));
-            if($this->updating){
-                event(new PushDataToClients($beneficiary->uuid, ChannelMaker::make($this->uuid), "BeneficiaryWasUpdated"));
-                event(new BeneficiaryWasUpdated());
-            }else{
-                event(new BeneficiaryWasCreated($beneficiary, ""));
-                event(new PushDataToClients([], ChannelMaker::make($this->uuid), "BeneficiaryWasEnrolled"));
-            }
+//            if($this->updating){
+//                event(new PushDataToClients($beneficiary->uuid, ChannelMaker::make($this->uuid), "BeneficiaryWasUpdated"));
+//                event(new BeneficiaryWasUpdated());
+//            }else{
+//                event(new BeneficiaryWasCreated($beneficiary, ""));
+//                event(new PushDataToClients([], ChannelMaker::make($this->uuid), "BeneficiaryWasEnrolled"));
+//            }
 
         }catch (\Exception $e){
             var_dump($e->getTraceAsString());
