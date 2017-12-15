@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Webpatser\Uuid\Uuid;
 
 class BuildApplicantForm extends Job implements ShouldQueue
@@ -58,6 +59,7 @@ class BuildApplicantForm extends Job implements ShouldQueue
             $forms = $this->generate_them($number_to_generate);
             event(new FormsDataWereGenerated($forms, $this->generator));
         }catch (\Exception $e){
+            Log::error($e->getTrace());
             $mes = "From BuildApplicantForm => {$e->getMessage()}";
             var_dump($e->getMessage());
             event(new FormsDataGenerationFailed($this->generator, $mes));
