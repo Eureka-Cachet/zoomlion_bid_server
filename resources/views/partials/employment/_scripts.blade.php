@@ -73,7 +73,7 @@
                         data.append('number_of_form', number_of_form);
                         data.append('_token', "{!! csrf_token() !!}");
                         this.$http.post(url, data).then(function(res){
-                            // console.log(res.data);
+                            console.log(res);
                             $.LoadingOverlay('hide');
                             if(res.data.success){
                                 this.show_generating = true;
