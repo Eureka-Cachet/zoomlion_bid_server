@@ -141,9 +141,10 @@ class SeedOldBeneficiaries extends Command
         try{
             Excel::load($file_name, function($reader) use ($file_name){
 
-                $reader->all()->map(function ($row) {
+                $reader->all()
+                    ->map(function ($row) {
                     return [
-                        "bid" => (int)$row->staffid,
+                        "bid" => (int)array_last(explode("/", $row->id)),
                         "full_name" => $row->staffname,
                         "rank_id" => $this->get_rank_id($row->section),
                         "region_id" => $this->get_region_id($row->region),
@@ -160,12 +161,12 @@ class SeedOldBeneficiaries extends Command
                     ->each(function($b) use ($file_name){
                         $this->info("creating Beneficiary with BID -> {$b['bid']}");
                         $beneficiary = Beneficiary::create($b);
-                        $path_and_encoded = $this->get_path_and_encoded($beneficiary);
-
-                        $beneficiary->picture()->create([
-                            'path' => $path_and_encoded["path"],
-                            'encoded' => $path_and_encoded["encoded"]
-                        ]);
+//                        $path_and_encoded = $this->get_path_and_encoded($beneficiary);
+//
+//                        $beneficiary->picture()->create([
+//                            'path' => $path_and_encoded["path"],
+//                            'encoded' => $path_and_encoded["encoded"]
+//                        ]);
                         $this->info("done creating -> {$b['bid']}");
                     });
             });
