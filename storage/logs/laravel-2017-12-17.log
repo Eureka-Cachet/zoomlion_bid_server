@@ -1,0 +1,6 @@
+[2017-12-17 12:39:23] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 803213312 bytes) in /var/www/html/vendor/laravel/framework/src/Illuminate/Log/Writer.php:308
+Stack trace:
+#0 {main}  
+[2017-12-17 12:51:32] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 803213312 bytes) in /var/www/html/vendor/laravel/framework/src/Illuminate/Log/Writer.php:308
+Stack trace:
+#0 {main}  

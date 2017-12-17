@@ -7,9 +7,6 @@
 
          Vue.component('v-select', VueSelect.VueSelect);
 
-        var host = window.location.host;
-        var socket = io.connect('http://' + host + ':6001');
-        var enrolmentSocket = io.connect('http://' + host + ':6001/enrolment');
 
         var channel = 'staff_'+"{{auth()->user()->uuid}}_channel:CaptureBioData";
         var captureBioEvent = "{{auth()->user()->uuid}}:CaptureBioData";
@@ -341,10 +338,10 @@
                 enrolmentSocket.on(reviewCaptureEvent, function(data){
 
                     this.capturingBioData = false;
-                    this.reviewingBioData = true;        
+                    this.reviewingBioData = true;
+                    data = JSON.parse(data);
 
                     console.log("enrollment data", data);
-                    console.log(data.thumb_right);
 
                     this.thumbRight.encoded = data.thumb_right.encoded;
                     this.thumbRight.uri = this.toDataUri(data.thumb_right.encoded);

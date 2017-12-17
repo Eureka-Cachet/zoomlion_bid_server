@@ -47,7 +47,7 @@ class SeedAll extends Command
             $this->call('db:seed-ranks');
             $this->call('db:seed-links');
             $this->call('db:seed-sys-images');
-            $this->call('db:seed-id-types');
+            $this->call('db:seed-country-id-types');
             $this->info('App Database has been bootstrapped Successfully.');
         }catch (\Exception $e){
             $this->error("Error Occurred : " . $e->getMessage());

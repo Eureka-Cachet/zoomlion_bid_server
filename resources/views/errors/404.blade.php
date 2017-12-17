@@ -38,7 +38,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <h1> ERROR <strong>404</strong> – :) </h1>
+                <h1> SORRY <strong>404</strong> – :) </h1>
                 <h2>Oops! That page can’t be found.</h2>
                 <div class="error-details"> Sorry, an error has occured, Requested page not found! </div>
             </div>

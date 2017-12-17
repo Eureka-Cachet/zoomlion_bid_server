@@ -18,7 +18,7 @@ const dashboardBeneficiary = "DASHBOARD:BENEFICIARY";
 const connectedDevicesEvent = "devices:connected";
 
 
-let devices = [];
+var devices = [];
 const room = "DEVICES";
 
 function update_list({type, deviceId, connId}) {
@@ -42,7 +42,7 @@ enrolment.on('connection', function(socket){
     socket.on('enrolment', function(payload){
         console.log('***********from enrolment*************');
         console.log(payload.channel);
-        let stringify = JSON.stringify(payload.data);
+        var stringify = JSON.stringify(payload.data);
         console.log(stringify);
         socket.broadcast.emit(payload.channel, stringify);
         console.log('**************************************');
@@ -64,7 +64,7 @@ enrolment.on('connection', function(socket){
 
 
 var Redis = require('ioredis');
-var redis = new Redis(6379, 'redis');
+var redis = new Redis(6379, 'clocking-redis');
 
 function handler(req, res){
     res.writeHead(200);
@@ -125,7 +125,7 @@ io.on('connection', function(socket){
     });
 
     socket.on('disconnect', function(any){
-        let current = [];
+        var current = [];
         console.log("---------------- devices disconnection --------------------");
         console.log(`${socket.id} public disconnection`, any);
         current = removeFromOnlineList(devices, socket.id);

@@ -21,9 +21,9 @@ class BeneficiariesMiddleware
         !collect([Constants::OPERATION_ROLE, Constants::SYSADMIN_ROLE, Constants::ADMIN_ROLE])->contains($role_id)
         ){
             if($request->ajax() || $request->wantsJson()){
-                return response('Unauthorized.', 401);
+                return response('Forbidden.', 403);
             }
-            abort(404);
+            abort(403);
         }
         return $next($request);
     }

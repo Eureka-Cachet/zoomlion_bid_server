@@ -22,6 +22,6 @@
 <script src="{!! elixir('js/date_fns.js') !!}"></script>
 <script src="{!! elixir('js/caplet.custom.js') !!}"></script>
 <script type="text/javascript">
-    var host = window.location.host;
-    var socket = io.connect('http://' + host + ':6001');
+    var socket = io();
+    var enrolmentSocket = io('/enrolment');
 </script>

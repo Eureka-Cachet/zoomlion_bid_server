@@ -41,7 +41,7 @@ class PagesController extends Controller
 
     public function dashboard()
     {
-        return view('dashboard.dashboard')->with('filename', 'link');
+        return view('dashboard.dashboard');
     }
 
     public function locations()

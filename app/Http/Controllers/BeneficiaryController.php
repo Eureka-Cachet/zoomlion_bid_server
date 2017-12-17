@@ -41,6 +41,8 @@ class BeneficiaryController extends Controller
     public function single($uuid, Request $request)
     {
         $beneficiary = $this->beneficiaryRepository->get_by_uuid($uuid);
+        if(is_null($beneficiary)) abort(404);
+
         $data = $this->manager
             ->createData(new Item($beneficiary, new BeneficiaryCollectionTransformer(false)))
             ->toArray();
@@ -51,6 +53,8 @@ class BeneficiaryController extends Controller
     public function update($uuid, Request $request)
     {
         $beneficiary = $this->beneficiaryRepository->get_by_uuid($uuid);
+        if(is_null($beneficiary)) abort(404);
+
         $data = $this->manager
             ->createData(new Item($beneficiary, new BeneficiaryCollectionTransformer(false)))
             ->toArray();

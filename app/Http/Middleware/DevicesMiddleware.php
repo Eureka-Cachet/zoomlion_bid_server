@@ -18,12 +18,14 @@ class DevicesMiddleware
     {
         $role_id = auth()->user()->roles->first()->id;
         if(
-        !collect([Constants::IT_ROLE, Constants::ADMIN_ROLE, Constants::SYSADMIN_ROLE])->contains($role_id)
+        !collect([Constants::IT_ROLE,
+            Constants::ADMIN_ROLE,
+            Constants::SYSADMIN_ROLE])->contains($role_id)
         ){
             if($request->ajax() || $request->wantsJson()){
-                return response('Unauthorized.', 401);
+                return response('Forbidden.', 403);
             }
-            abort(404);
+            abort(403);
         }
         return $next($request);
     }

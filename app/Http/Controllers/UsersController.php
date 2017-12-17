@@ -35,6 +35,8 @@ class UsersController extends Controller
     {
         $user = $this->repository->single_user($id);
 
+        if(is_null($user)) abort(404);
+
         return view('users.profile')->with('user', $user);
     }
 

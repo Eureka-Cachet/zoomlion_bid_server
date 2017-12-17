@@ -1,0 +1,87 @@
+ version: '2'
+
+ services: 
+    
+    clocking-app: 
+        image: eurekacachet/zoomlion_bid:dev
+        container_name: clocking-app
+        privileged: true
+        depends_on:
+            - clocking-db
+            - clocking-queue
+            - clocking-redis
+        links:
+            - clocking-db
+            - clocking-queue
+            - clocking-redis            
+        networks:
+            - clockingapp-network
+
+    clocking-db:
+        image: mysql:latest
+        container_name: clocking-db
+        ports:
+            - "3306:3306"
+        environment: 
+            - MYSQL_ROOT_PASSWORD=clocking
+            - MYSQL_DATABASE=clocking
+            - MYSQL_USER=clocking
+            - MYSQL_PASSWORD=clocking
+        networks:
+            - clockingapp-network
+
+    clocking-queue:
+        image: thomasdolar/beanstalkd
+        container_name: clocking-queue
+        ports: 
+            - "11300:11300"
+        networks:
+            - clockingapp-network
+
+    clocking-redis:
+        image: sameersbn/redis
+        container_name: clocking-redis
+        volumes: 
+            - ./storage/docker/redis:/var/lib/redis
+        ports: 
+            - "6379:6379"
+        networks:
+            - clockingapp-network
+
+    clocking-socket:
+        image: thomasdolar/node
+        container_name: clocking-socket
+        links:
+            - clocking-redis:redis
+        depends_on:
+            - clocking-redis
+        volumes:
+            - ./socket:/var/www/socket
+        ports:
+            - "6001"
+        networks:
+            - clockingapp-network
+
+    clocking-nginx:
+      image: nginx:1.10-alpine
+      container_name: clocking-nginx
+      volumes:
+        - ./public:/var/www/public
+        - ./prod.vhost.conf:/etc/nginx/conf.d/default.conf
+        - ./docker/nginx/letsencrypt:/etc/letsencrypt
+      depends_on:
+        - clocking-app
+        - clocking-socket
+      links:
+        - clocking-app
+        - clocking-socket
+      ports:
+        - '80:80'
+        - '443:443'
+      networks:
+        - clockingapp-network
+
+
+ networks: 
+    clockingapp-network: 
+        driver: bridge

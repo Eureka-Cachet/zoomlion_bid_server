@@ -62,22 +62,26 @@ class AddNewBeneficiary extends Job implements ShouldQueue
             $beneficiary = $this->get_beneficiary();
             $beneficiary->update($this->data->toArray());
             $this->save_fingers($beneficiary);
+
             if(!$this->updating){
                 $this->save_form_image($beneficiary);
             }
+
             $this->save_picture($beneficiary);
 
-            event(new FingerprintsUpdated($this->getAllFingerprints(), "FINGERPRINTS:UPDATED"));
-//            if($this->updating){
-//                event(new PushDataToClients($beneficiary->uuid, ChannelMaker::make($this->uuid), "BeneficiaryWasUpdated"));
-//                event(new BeneficiaryWasUpdated());
-//            }else{
-//                event(new BeneficiaryWasCreated($beneficiary, ""));
-//                event(new PushDataToClients([], ChannelMaker::make($this->uuid), "BeneficiaryWasEnrolled"));
-//            }
+            $channel = $this->get_finger_prints_updated_channel();
+            event(new FingerprintsUpdated($this->getAllFingerprints(), $channel));
+
+            if($this->updating){
+                event(new PushDataToClients($beneficiary->uuid, ChannelMaker::make($this->uuid), "BeneficiaryWasUpdated"));
+                event(new BeneficiaryWasUpdated());
+            }else{
+                event(new BeneficiaryWasCreated($beneficiary, ""));
+                event(new PushDataToClients([], ChannelMaker::make($this->uuid), "BeneficiaryWasEnrolled"));
+            }
 
         }catch (\Exception $e){
-            var_dump($e->getTraceAsString());
+            dump($e->getTraceAsString());
             event(new BeneficiaryAddingFailed($e->getMessage(), $this->getChannel()));
         }
     }
@@ -219,5 +223,14 @@ class AddNewBeneficiary extends Job implements ShouldQueue
         return [
             "beneficiaries" => Beneficiary::count(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    private function get_finger_prints_updated_channel()
+    {
+        $beneficiary_district = $this->get_beneficiary()->district->code;
+        return "{$beneficiary_district}_FINGERPRINTS";
     }
 }

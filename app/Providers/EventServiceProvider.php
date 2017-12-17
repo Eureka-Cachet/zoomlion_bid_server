@@ -63,7 +63,9 @@ class EventServiceProvider extends ServiceProvider
         BeneficiaryWasUpdated::class => [
             DispatchUpdatedDataJob::class
         ],
-        BeneficiaryAddingFailed::class => [],
+        BeneficiaryAddingFailed::class => [
+
+        ],
         SupervisorHasLoggedIn::class => [
             UpdateHistoryLogs::class
         ],

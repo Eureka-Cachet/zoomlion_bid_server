@@ -15,6 +15,7 @@ use Eureka\Helpers\CodeGenerator;
 use Eureka\Helpers\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class BeneficiaryRepository
 {
@@ -139,48 +140,69 @@ class BeneficiaryRepository
     /**
      * @param $increment
      * @return int
+     * @throws \Exception
      */
-    public static function get_new_bid($increment)
+    public static function get_new_bid($increment = 1)
     {
-        $generator = new CodeGenerator();
-        $next_increment = $increment;
+        dump("Initial increment -> {$increment}");
+        try{
+            $generator = new CodeGenerator();
+            $next_increment = null;
 
-        $last_beneficiary =  self::get_last_beneficiary();
-        $last_form_generated = self::get_last_form();
+            $last_beneficiary =  self::get_last_beneficiary();
+            dump("last beneficiary => {$last_beneficiary}");
+            $last_form_generated = self::get_last_form();
+            dump("last form => {$last_form_generated}");
 
-        if(! $last_form_generated && !$last_beneficiary){
-            dump('no form, no beneficiary');
-            return $generator->encode(CodeGenerator::make($increment));
+            if(is_null($last_form_generated) && is_null($last_beneficiary)){
+                dump('no form, no beneficiary');
+                $next_increment = $increment;
+            }
+
+            if(is_null($last_beneficiary) && $last_form_generated){
+                $last_form_code = self::remove_initials($last_form_generated->code);
+                $last_form_code_decoded = $generator->decode($last_form_code);
+                dump("no beneficiary | Form => code(e=>{$last_form_code} -> d=>{$last_form_code_decoded})");
+                $next_increment =  $last_form_code_decoded + $increment;
+            }
+
+            if(is_null($last_form_generated) && $last_beneficiary){
+                $last_beneficiary_bid = self::remove_initials($last_beneficiary->bid);
+                $last_beneficiary_bid_decoded = $generator->decode($last_beneficiary_bid);
+                dump("no form | Beneficiary => bid(e=>{$last_beneficiary_bid} -> d=>{$last_beneficiary_bid_decoded})");
+                $next_increment = $last_beneficiary_bid_decoded + $increment;
+            }
+
+            if($last_beneficiary && $last_form_generated){
+                $last_form_code = self::remove_initials($last_form_generated->code);
+                $last_form_code_decoded = $generator->decode($last_form_code);
+                $last_beneficiary_bid = self::remove_initials($last_beneficiary->bid);
+                $last_beneficiary_bid_decoded = $generator->decode($last_beneficiary_bid);
+
+                dump('there is form and beneficiary');
+                dump("|> Beneficiary => bid(e=>{$last_beneficiary_bid} -> d=>{$last_beneficiary_bid_decoded})");
+                dump("|> Form => code(e=>{$last_form_code} -> d=>{$last_form_code_decoded})");
+
+                $max_decoded_bid = collect([$last_form_code_decoded, $last_beneficiary_bid_decoded])->max();
+                dump('form sequence decoded -> ', $last_form_code_decoded);
+                dump('beneficiary sequence decoded -> ', $last_beneficiary_bid_decoded);
+                dump('max sequence decoded -> ', $max_decoded_bid);
+
+//                $code = $generator->decode((int) substr($max_decoded_bid, -7));
+                $next_increment = $max_decoded_bid + $increment;
+//                $new_encode_bid = $generator->encode($new_decoded_bid);
+//                dump("|> New BID => (e=>{$new_encode_bid} -> d=>{$new_decoded_bid})");
+//                $next_increment = $code + $increment;
+            }
+
+            dump('next increment -> ', $next_increment);
+            $new_encode_bid = $generator->encode($next_increment);
+            dump("|> New BID => (e=>{$new_encode_bid} -> d=>{$next_increment})");
+            return $new_encode_bid;
+        }catch (\Exception $exception){
+//            Log::critical($exception->getMessage());
+            dump($exception->getTrace());
         }
-
-        if(! $last_beneficiary && $last_form_generated){
-            dump('no beneficiary');
-            $last_form_code = $generator->decode((int) substr($last_form_generated->code, -7));
-            $next_increment =  $last_form_code + $increment;
-        }
-
-        if(!$last_form_generated && $last_beneficiary){
-            dump('no form');
-            $last_beneficiary_bid = $generator->decode((int) substr($last_beneficiary->bid, -7));
-            $next_increment = $last_beneficiary_bid + $increment;
-        }
-
-        if($last_beneficiary && $last_form_generated){
-            dump('there is form and beneficiary');
-            $form_seq = $generator->decode(self::extract_code($last_form_generated->code));
-            $beneficiary_seq = $generator->decode(self::extract_code($last_beneficiary->bid));
-            $bid = collect([$form_seq, $beneficiary_seq])->max();
-            dump('form sequence -> ', $form_seq);
-            dump('beneficiary sequence -> ', $beneficiary_seq);
-            dump('max sequence -> ', $bid);
-            $code = $generator->decode((int) substr($bid, -7));
-            dump('old code -> ', $code);
-            $next_increment = $code + $increment;
-        }
-        dump('next increment -> ', $next_increment);
-        $new_encoded = $generator->encode(CodeGenerator::make($next_increment));
-        dump('new code -> ', $new_encoded);
-        return $new_encoded;
     }
 
     /**
@@ -188,16 +210,20 @@ class BeneficiaryRepository
      */
     public static function get_last_beneficiary()
     {
-        $code = new CodeGenerator();
-        $last = Beneficiary::all()->filter(function ($b) {
-            return starts_with($b->bid, Config::getInitials());
-        })->sortBy(function($b) use ($code) {
-            return $code->decode(substr($b->bid, -7));
-        })->last();
+        $BID_initials = Config::getInitials();
+//        $code = new CodeGenerator();
+        return Beneficiary::where('bid', 'like', "{$BID_initials}%")
+            ->latest()->first();
 
-        if(!$last) return null;
-
-        return $last;
+//        $last = Beneficiary::all()->filter(function ($b) use($BID_initials){
+//            return starts_with($b->bid, $BID_initials);
+//        })->sortBy(function($b) use ($code) {
+//            return $code->decode(substr($b->bid, -7));
+//        })->last();
+//
+//        if(!$last) return null;
+//
+//        return $last;
     }
 
     /**
@@ -212,7 +238,7 @@ class BeneficiaryRepository
      * @param $bid
      * @return string
      */
-    public static function extract_code($bid)
+    public static function remove_initials($bid)
     {
         return substr($bid, -7);
     }

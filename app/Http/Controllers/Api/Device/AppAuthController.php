@@ -6,14 +6,19 @@ namespace clocking\Http\Controllers\Api\Device;
 use Carbon\Carbon;
 use clocking\Device;
 use clocking\DeviceHistory;
+use clocking\Events\FingerprintsUpdated;
+use clocking\Fingerprint;
 use clocking\Http\Controllers\Controller;
 use clocking\User;
 use Dingo\Api\Routing\Helpers;
 use Eureka\Helpers\CodeGenerator;
 use Eureka\Repositories\UsersRepository;
+use Eureka\Transformers\Device\FingerprintCollectionTransformer;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -61,8 +66,11 @@ class AppAuthController extends Controller
         }
         //dispatch supervisor login event
         $log_uuid = $this->updateHistoryLogsForConnect($user);
+
+        $this->test_fingerprints($user);
+
         return $this->respondForAuth('success', '200', 'login successful',
-            $token, $user->uuid, $log_uuid, $user->roles->first()->id);
+            $token, $user->uuid, $log_uuid, $user->roles->first()->id, $user->district->code);
     }
 
     /**
@@ -82,8 +90,8 @@ class AppAuthController extends Controller
         return $this->respondForAuth("success", '200', 'logout successful');
     }
 
-    private function respondForAuth($status, $code, $message,
-                                    $token = null, $userUUID = null, $log_uuid = null, $role_id = null)
+    private function respondForAuth($status, $code, $message, $token = null, $userUUID = null,
+                                    $log_uuid = null, $role_id = null, $district_code = null)
     {
         return response()->json([
             "status" => $status,
@@ -92,7 +100,8 @@ class AppAuthController extends Controller
             "token" => $token,
             "userUUID" => $userUUID,
             "logUUID" => $log_uuid,
-            "userRoleId" => $role_id
+            "userRoleId" => $role_id,
+            "districtCode" => $district_code
         ])->setStatusCode($code);
     }
 
@@ -145,5 +154,30 @@ class AppAuthController extends Controller
 
         $log->update(["disconnected_time" => $now]);
         return true;
+    }
+
+    private function getAllFingerprints($district_code)
+    {
+        $fingerprints = Fingerprint::all()->filter(function(Fingerprint $f) use($district_code){
+            return !is_null($f->beneficiary)
+                && $f->beneficiary->district->code == $district_code;
+        });
+        $data = (new Manager())->createData(
+            new Collection($fingerprints,
+                new FingerprintCollectionTransformer(false)))
+            ->toArray();
+        return $data["data"];
+    }
+
+    private function get_finger_prints_updated_channel(User $user)
+    {
+        $beneficiary_district = $user->district->code;
+        return "{$beneficiary_district}_FINGERPRINTS";
+    }
+
+    private function test_fingerprints(User $user)
+    {
+        $channel = $this->get_finger_prints_updated_channel($user);
+        event(new FingerprintsUpdated([], $channel));
     }
 }

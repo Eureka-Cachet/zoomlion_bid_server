@@ -4,6 +4,9 @@ MAINTAINER  eurekacachetdev@gmail.com
 
 # Custom layers
 
+RUN         apt-get update && \
+            apt-get install -y xvfb libfontconfig wkhtmltopdf
+
 COPY        supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 COPY        . /var/www

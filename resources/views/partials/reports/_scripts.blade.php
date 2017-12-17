@@ -1,8 +1,6 @@
 <script type="text/javascript">
         $(function(){
 
-            var host = window.location.host;
-            var socket = io.connect('http://' + host + ':6001');
             var channel_prefix = 'staff_'+"{{auth()->user()->uuid}}";
 
             var $content = $('#content');

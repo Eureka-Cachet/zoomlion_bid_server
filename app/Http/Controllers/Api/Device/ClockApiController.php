@@ -43,10 +43,11 @@ class ClockApiController extends Controller
     public function add(Request $request)
     {
         if($request->has('type') && $request->get('type') == 'batch'){
-//            event(new BeneficiaryHasClocked());
+            event(new BeneficiaryHasClocked());
+            collect($request->all())->each(function($a){
+                dump($a);
+            });
             return response()->json(['status' => 200]);
-//            $all = $request;
-//            return $all->all();
         }
 
         $beneficiary = $this->attendanceRepository->add_one(collect($request->all()));

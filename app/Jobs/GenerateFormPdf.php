@@ -2,6 +2,7 @@
 
 namespace clocking\Jobs;
 
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use clocking\Events\FormsDataGenerationFailed;
 use clocking\Events\FormsTemplateReady;
 use clocking\Jobs\Job;
@@ -42,23 +43,27 @@ class GenerateFormPdf extends Job implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param PDF $PDF
+     * @throws \Exception
      */
-    public function handle(PDF $PDF)
+    public function handle()
     {
-        $data = $this->generate_template_data($this->forms);
-        //build the template with the data
-        $pdf = $this->make_pdf($PDF, $data);
-        //store the template
-        $filename = $this->get_filename();
-        $pdf->save(storage_path("app/forms/{$filename}"));
-        //notify the generator with the link to the template in order to download
-        $link = $this->get_link($filename);
-        if(is_null($link)){
-            $mes = "Here Link is null";
-            event(new FormsDataGenerationFailed($this->generator, $mes));
-        }else{
-            event(new FormsTemplateReady($link, $this->generator));
+        try{
+            $data = $this->generate_template_data($this->forms);
+            //build the template with the data
+            $pdf = $this->make_pdf($data);
+            //store the template
+            $filename = $this->get_filename();
+            $pdf->save(storage_path("app/forms/{$filename}"));
+            //notify the generator with the link to the template in order to download
+            $link = $this->get_link($filename);
+            if(is_null($link)){
+                $mes = "Here Link is null";
+                event(new FormsDataGenerationFailed($this->generator, $mes));
+            }else{
+                event(new FormsTemplateReady($link, $this->generator));
+            }
+        }catch (\Exception $e){
+            event(new FormsDataGenerationFailed($this->generator, $e->getMessage()));
         }
     }
 
@@ -93,16 +98,16 @@ class GenerateFormPdf extends Job implements ShouldQueue
         ];
     }
 
+
     /**
-     * @param PDF $PDF
      * @param $data
-     * @return PDF
+     * @return mixed
      */
-    private function make_pdf(PDF $PDF, $data)
+    private function make_pdf($data)
     {
         $data = collect($data)->put('zoom_logo', $this->get_zoom_logo());
         $data = collect($data)->put('generator_name', $this->generator->full_name);
-        return $PDF->loadView('templates.pdfs.applicant_form', $data);
+        return SnappyPdf::loadView('templates.pdfs.applicant_form', $data);
     }
 
     /**

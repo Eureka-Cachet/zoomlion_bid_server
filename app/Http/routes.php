@@ -5,19 +5,25 @@ Route::post('/auth/login', ['as' => 'postLogin', 'uses' => 'ServerAuthController
 Route::get('/auth/logout', ['as' => 'logout', 'uses' => 'ServerAuthController@logout']);
 
 Route::group(['middleware' => ['web', 'auth']], function(){
+
     Route::get('/', ['as' => 'index', 'uses' => 'PagesController@index']);
+
     Route::get('/dashboard', ['middleware' => 'dashboard', 'as' => 'dashboard', 'uses' => 'PagesController@dashboard']);
 
-    Route::get('/settings', ['as' => 'settings.index', 'uses' => 'PagesController@settings']);
+    Route::get('/settings', ['middleware' => 'settings', 'as' => 'settings.index', 'uses' => 'PagesController@settings']);
 
-    Route::get('/logs', ['as' => 'logs.index', 'uses' => 'PagesController@logs']);
+    Route::get('/logs', ['middleware' => 'logs', 'as' => 'logs.index', 'uses' => 'PagesController@logs']);
 
-    Route::get('/users', ['as' => 'users.index', 'uses' => 'UsersController@index']);
-    Route::get('/users/{id}', ['as' => 'user.profile', 'uses' => 'UsersController@profile']);
+    Route::group(['middleware' => 'users'], function(){
+        Route::get('/users', ['as' => 'users.index', 'uses' => 'UsersController@index']);
+        Route::get('/users/{id}', ['as' => 'user.profile', 'uses' => 'UsersController@profile']);
+    });
 
-    Route::get('/beneficiaries', ['as'=> 'beneficiaries.index', 'uses'=> 'BeneficiaryController@index']);
-    Route::get('/beneficiaries/{id}', ['as'=> 'beneficiaries.profile', 'uses'=> 'BeneficiaryController@single']);
-    Route::get('/beneficiaries/{id}/update', ['as'=> 'beneficiaries.profile.update', 'uses'=> 'BeneficiaryController@update']);
+    Route::group(['middleware' => 'beneficiaries'], function(){
+        Route::get('/beneficiaries', ['as'=> 'beneficiaries.index', 'uses'=> 'BeneficiaryController@index']);
+        Route::get('/beneficiaries/{id}', ['as'=> 'beneficiaries.profile', 'uses'=> 'BeneficiaryController@single']);
+        Route::get('/beneficiaries/{id}/update', ['as'=> 'beneficiaries.profile.update', 'uses'=> 'BeneficiaryController@update']);
+    });
 
     Route::get('/locations', ['middleware' => 'locations', 'as' => 'locations.index', 'uses' => 'PagesController@locations']);
 
@@ -33,7 +39,7 @@ Route::group(['middleware' => ['web', 'auth']], function(){
 
     Route::get('/backup', ['middleware' => 'backups', 'as' => 'backups.index', 'uses' => 'PagesController@backups']);
 
-    Route::get('/download', ['as' => 'pdf.download', 'uses' => 'PagesController@download']);
+    Route::get('/download', ['middleware' => 'download', 'as' => 'pdf.download', 'uses' => 'PagesController@download']);
 });
 
 Route::group(['prefix' => 'internal-api','namespace' => 'Api\Internal', 'middleware' => ['api']], function(){

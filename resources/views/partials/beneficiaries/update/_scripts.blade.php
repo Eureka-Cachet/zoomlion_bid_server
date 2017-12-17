@@ -8,10 +8,6 @@
 
         var userUUID = "{{auth()->user()->uuid}}";
 
-        var host = window.location.host;
-        var socket = io.connect('http://' + host + ':6001');
-        var enrolmentSocket = io.connect('http://' + host + ':6001/enrolment');
-
         var channel = 'staff_'+"{{auth()->user()->uuid}}_channel:CaptureBioData";
         var captureBioEvent = "{{auth()->user()->uuid}}:CaptureBioDataUpdate";
         var cancelCaptureEvent = "{{auth()->user()->uuid}}:CancelCapture";
@@ -341,7 +337,7 @@
                 }.bind(this));
 
                 enrolmentSocket.on(reviewCaptureEvent, function(data){
-                    // var data = JSON.parse(data);
+                    var data = JSON.parse(data);
                     console.log(data);
 
                     this.capturingBioData = false;

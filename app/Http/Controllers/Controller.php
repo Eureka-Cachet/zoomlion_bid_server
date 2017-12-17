@@ -17,7 +17,7 @@ class Controller extends BaseController
         return response()->json([
             'success' => false,
             'message' => is_null($message) ? "" : $message
-        ]);
+        ])->setStatusCode(500);
     }
 
     public function onSuccessRequest()

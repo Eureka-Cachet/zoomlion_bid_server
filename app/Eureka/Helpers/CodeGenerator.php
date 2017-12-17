@@ -73,11 +73,12 @@ class CodeGenerator
      * @return int
      */
     public function decode($s_id){
-        return $this->cryptomute->decrypt((string) $s_id, 10, true, $this->getPass(), $this->getIV());
+        return (int)$this->cryptomute->decrypt((string) $s_id, 10, true, $this->getPass(), $this->getIV());
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
     public static function uuid(){
         return Uuid::generate(4)->__toString();
