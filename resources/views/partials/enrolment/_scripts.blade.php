@@ -339,9 +339,6 @@
 
                     this.capturingBioData = false;
                     this.reviewingBioData = true;
-                    data = JSON.parse(data);
-
-                    console.log("enrollment data", data);
 
                     this.thumbRight.encoded = data.thumb_right.encoded;
                     this.thumbRight.uri = this.toDataUri(data.thumb_right.encoded);

@@ -337,9 +337,6 @@
                 }.bind(this));
 
                 enrolmentSocket.on(reviewCaptureEvent, function(data){
-                    var data = JSON.parse(data);
-                    console.log(data);
-
                     this.capturingBioData = false;
                     this.reviewingBioData = true;      
 
