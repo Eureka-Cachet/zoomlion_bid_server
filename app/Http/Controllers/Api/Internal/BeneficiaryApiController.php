@@ -73,6 +73,7 @@ class BeneficiaryApiController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function add(Request $request)
     {
@@ -105,10 +106,14 @@ class BeneficiaryApiController extends Controller
     public function update($uuid, Request $request)
     {
         if($request->get('type') == 'complete'){
-            $data = $this->prepare_update_data($request, $uuid);
-            $job = new AddNewBeneficiary(collect($data), auth()->user()->uuid, true);
-            $this->dispatch($job);
-            return response()->json(['status' => 'ok'])->setStatusCode(200);
+            try {
+                $data = $this->prepare_update_data($request, $uuid);
+                $job = new AddNewBeneficiary(collect($data), auth()->user()->uuid, true);
+                $this->dispatch($job);
+                return response()->json(['status' => 'ok'])->setStatusCode(200);
+            } catch (\Exception $e) {
+
+            }
         }
         $data = $this->format_gender(collect($request->all()));
         $data = $this->format_full_name($data);
@@ -156,6 +161,7 @@ class BeneficiaryApiController extends Controller
     /**
      * @param Request $request
      * @return string
+     * @throws \Exception
      */
     private function create_beneficiary(Request $request)
     {
@@ -174,11 +180,12 @@ class BeneficiaryApiController extends Controller
     /**
      * @param $uuid
      * @return string
+     * @throws \Exception
      */
     private function update_beneficiary($uuid)
     {
         $beneficiary = $this->beneficiaryRepository->get_by_uuid($uuid);
-        $bid = Config::getInitials() . self::get_new_bid(1);
+        $bid = Config::getInitials() . BeneficiaryRepository::get_new_bid();
         $beneficiary->update([
             'bid' => $bid,
             'valid' => 1
@@ -189,6 +196,7 @@ class BeneficiaryApiController extends Controller
     /**
      * @param Request $request
      * @return array
+     * @throws \Exception
      */
     private function prepare_data(Request $request)
     {
@@ -408,6 +416,7 @@ class BeneficiaryApiController extends Controller
      * @param $request
      * @param $uuid
      * @return array
+     * @throws \Exception
      */
     private function prepare_update_data($request, $uuid)
     {

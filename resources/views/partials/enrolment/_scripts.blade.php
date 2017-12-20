@@ -340,6 +340,8 @@
                     this.capturingBioData = false;
                     this.reviewingBioData = true;
 
+                    console.log("enrollment data", data);
+
                     this.thumbRight.encoded = data.thumb_right.encoded;
                     this.thumbRight.uri = this.toDataUri(data.thumb_right.encoded);
                     this.thumbRight.fmd = data.thumb_right.fmd;

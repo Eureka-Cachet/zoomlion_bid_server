@@ -4,3 +4,6 @@ Stack trace:
 [2017-12-17 12:51:32] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 803213312 bytes) in /var/www/html/vendor/laravel/framework/src/Illuminate/Log/Writer.php:308
 Stack trace:
 #0 {main}  
+[2017-12-17 23:28:26] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  

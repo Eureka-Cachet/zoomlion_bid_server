@@ -1,0 +1,40 @@
+[2017-12-18 00:14:45] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:17:37] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:20:17] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:23:40] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:27:09] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:30:48] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:34:07] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:37:37] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:42:16] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:46:21] local.ERROR: Symfony\Component\Debug\Exception\FatalErrorException: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 67108864 bytes) in /var/www/html/vendor/phpoffice/phpexcel/Classes/PHPExcel/Worksheet.php:1219
+Stack trace:
+#0 {main}  
+[2017-12-18 00:49:53] local.ERROR: Symfony\Component\Console\Exception\CommandNotFoundException: Command "tiker" is not defined.
+
+Did you mean this?
+    tinker in /var/www/html/vendor/symfony/console/Application.php:515
+Stack trace:
+#0 /var/www/html/vendor/symfony/console/Application.php(183): Symfony\Component\Console\Application->find('tiker')
+#1 /var/www/html/vendor/symfony/console/Application.php(117): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(107): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#3 /var/www/html/artisan(35): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#4 {main}  

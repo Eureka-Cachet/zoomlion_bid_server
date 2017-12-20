@@ -44,12 +44,10 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
     {
         try{
             $data = $this->prepare_data();
-//            dd($data);
             if(collect($data)->isEmpty()) return event(new FormsDataGenerationFailed($this->generator, "No Data Available"));
             if(is_null($data)) return event(new FormsDataGenerationFailed($this->generator, "Invalid Data"));
             $this->generate_report($data);
         } catch (\Exception $e){
-            dd($e->getMessage());
             event(new FormsDataGenerationFailed($this->generator, "Invalid Data"));
         }
     }
@@ -129,13 +127,6 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
     private function generate_report($data)
     {
         dispatch(new GenerateSheet($data, $this->get_template(), $this->get_title(), $this->generator));
-//        if($this->data["format"] == "xlsx"){
-//            dispatch(new GenerateSheet($data, $this->get_template(), $this->get_title(), $this->generator));
-//        }
-//
-//        if($this->data["format"] == "pdf"){
-//              dispatch(new GeneratePdf($data, $this->get_template(), $this->get_title(), $this->generator));
-//        }
     }
 
     /**
@@ -144,10 +135,6 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
     private function get_template()
     {
         return "templates.sheets.staff_allowance";
-//        if($this->data["format"] == "pdf"){
-//            return "templates.pdfs.staff_allowance";
-//        }
-//        return "templates.sheets.staff_allowance";
     }
 
     /**

@@ -42,9 +42,9 @@ enrolment.on('connection', function(socket){
     socket.on('enrolment', function(payload){
         console.log('***********from enrolment*************');
         console.log(payload.channel);
-        var stringify = JSON.stringify(payload.data);
-        console.log(stringify);
-        socket.broadcast.emit(payload.channel, stringify);
+        // var stringify = JSON.stringify(payload.data);
+        console.log(payload.data);
+        socket.broadcast.emit(payload.channel, payload.data);
         console.log('**************************************');
     });
 

@@ -1,0 +1,52 @@
+ version: '2'
+
+ services: 
+    
+    clocking-app:
+      image: 'eurekacachet/zoomlion_bid_server_staging:latest'
+      links:
+        - clocking-db
+        - clocking-queue
+        - clocking-redis
+      ports:
+        - '9000:9000'
+      privileged: true
+    clocking-db:
+      environment:
+        - MYSQL_DATABASE=clocking
+        - MYSQL_PASSWORD=clocking
+        - MYSQL_ROOT_PASSWORD=clocking
+        - MYSQL_USER=clocking
+      image: 'mysql:latest'
+      ports:
+        - '3306:3306'
+    clocking-nginx:
+      image: 'eurekacachet/zoomlion_bid_nginx_staging:latest'
+      links:
+        - clocking-app
+      ports:
+        - '80:80'
+        - '443:443'
+      volumes:
+        - '/etc/letsencrypt:/etc/letsencrypt'
+    clocking-queue:
+      image: 'thomasdolar/beanstalkd:latest'
+      ports:
+        - '8080:8080'
+        - '11300:11300'
+    clocking-redis:
+      image: 'sameersbn/redis:latest'
+      ports:
+        - '6379:6379'
+      volumes:
+        - '/srv/docker/redis:/var/lib/redis'
+    clocking-socket:
+      image: 'eurekacachet/zoomlion_bid_socket:latest'
+      links:
+        - 'clocking-redis:redis'
+      ports:
+        - '6001:6001'
+
+ networks: 
+    clockingapp-network: 
+        driver: bridge
