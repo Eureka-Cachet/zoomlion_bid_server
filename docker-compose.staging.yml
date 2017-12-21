@@ -3,49 +3,79 @@
  services: 
     
     clocking-app:
-      image: 'eurekacachet/zoomlion_bid_server_staging:latest'
+      image: eurekacachet/zoomlion_bid:dev
+      volumes:
+        - .:/var/www
+      depends_on:
+        - clocking-db
+        - clocking-queue
+        - clocking-redis
       links:
         - clocking-db
         - clocking-queue
         - clocking-redis
       ports:
-        - '9000:9000'
+        - 9000:9000
       privileged: true
+      networks:
+        - clockingapp-network
+
     clocking-db:
       environment:
         - MYSQL_DATABASE=clocking
         - MYSQL_PASSWORD=clocking
         - MYSQL_ROOT_PASSWORD=clocking
         - MYSQL_USER=clocking
-      image: 'mysql:latest'
+      image: mysql:latest
       ports:
-        - '3306:3306'
+        - 3306:3306
+      networks:
+        - clockingapp-network
+
     clocking-nginx:
-      image: 'eurekacachet/zoomlion_bid_nginx_staging:latest'
+      image: eurekacachet/zoomlion_bid_nginx_staging:dev
+      depends_on:
+        - clocking-app
+        - clocking-socket
       links:
         - clocking-app
+        - clocking-socket
       ports:
-        - '80:80'
-        - '443:443'
+        - 80:80
+        - 443:443
       volumes:
-        - '/etc/letsencrypt:/etc/letsencrypt'
+        - ./docker/nginx/letsencrypt:/etc/letsencrypt
+        - ./public:/var/www/public
+      networks:
+        - clockingapp-network
+
     clocking-queue:
-      image: 'thomasdolar/beanstalkd:latest'
+      image: thomasdolar/beanstalkd:latest
       ports:
-        - '8080:8080'
-        - '11300:11300'
+        - 8080:8080
+        - 11300:11300
+      networks:
+        - clockingapp-network
+
     clocking-redis:
-      image: 'sameersbn/redis:latest'
+      image: sameersbn/redis:latest
       ports:
-        - '6379:6379'
+        - 6379:6379
       volumes:
-        - '/srv/docker/redis:/var/lib/redis'
+        - ./storage/docker/redis/:/var/lib/redis
+      networks:
+        - clockingapp-network
+
     clocking-socket:
-      image: 'eurekacachet/zoomlion_bid_socket:latest'
+      image: eurekacachet/zoomlion_bid_socket:latest
+      depends_on:
+        - clocking-redis
       links:
-        - 'clocking-redis:redis'
+        - clocking-redis:redis
       ports:
-        - '6001:6001'
+        - 6001:6001
+      networks:
+        - clockingapp-network
 
  networks: 
     clockingapp-network: 
