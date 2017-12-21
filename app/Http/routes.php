@@ -8,7 +8,7 @@ Route::group(['middleware' => ['web', 'auth']], function(){
 
     Route::get('/', ['as' => 'index', 'uses' => 'PagesController@index']);
 
-    Route::get('/dashboard', ['middleware' => 'dashboard', 'as' => 'dashboard', 'uses' => 'PagesController@dashboard']);
+    Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'PagesController@dashboard']);
 
     Route::get('/settings', ['middleware' => 'settings', 'as' => 'settings.index', 'uses' => 'PagesController@settings']);
 

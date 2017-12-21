@@ -1,14 +1,8 @@
 <nav id="menu"  data-search="close" style="background: #29166f; color: white;">
     <ul>
-        @if(collect([
-            \Eureka\Helpers\Constants::SYSADMIN_ROLE,
-            \Eureka\Helpers\Constants::MANAGEMENT_ROLE,
-            \Eureka\Helpers\Constants::IT_ROLE,
-            \Eureka\Helpers\Constants::ADMIN_ROLE])->contains(auth()->user()->roles->first()->id))
-            <li class="{{ Request::is('dashboard') || Request::is('dashboard/*') ? "mm-selected" :  '' }} ">
-                <a href="{!! route('dashboard') !!}"><i style="color: white;" class="icon  fa fa-laptop"></i> Dashboard </a>
-            </li>
-        @endif
+        <li class="{{ Request::is('dashboard') || Request::is('dashboard/*') ? "mm-selected" :  '' }} ">
+            <a href="{!! route('dashboard') !!}"><i style="color: white;" class="icon  fa fa-laptop"></i> Dashboard </a>
+        </li>
 
         @if(collect([
             \Eureka\Helpers\Constants::ADMIN_ROLE, \Eureka\Helpers\Constants::SYSADMIN_ROLE,
