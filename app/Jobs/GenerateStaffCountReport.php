@@ -58,38 +58,30 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
     private function get_level()
     {
         $level = null;
-        $start = Carbon::parse($this->data['start']);
-        $end = Carbon::parse($this->data['end']);
-
         switch ($this->data["level"]){
             case 1:
-                $level = Region::withCount(['beneficiaries' => function($q) use ($end, $start) {
-                    $q->where('valid', true)
-                        ->whereBetween('created_at', [$start, $end]);
+                $level = Region::withCount(['beneficiaries' => function($q) {
+                    $q->where('valid', true);
                 }])->where('country_id', 1)->get();
                 break;
             case 2:
-                $level = District::withCount(['beneficiaries' => function($q) use($start, $end){
-                    $q->where('valid', true)
-                    ->whereBetween('created_at', [$start, $end]);
+                $level = District::withCount(['beneficiaries' => function($q) {
+                    $q->where('valid', true);
                 }])->where('region_id', $this->data['region_id'])->get();
                 break;
             case 3:
-                $level = Location::withCount(['beneficiaries' => function($q) use ($end, $start) {
-                    $q->where('valid', true)
-                        ->whereBetween('created_at', [$start, $end]);
+                $level = Location::withCount(['beneficiaries' => function($q) {
+                    $q->where('valid', true);
                 }])->where('district_id', $this->data['district_id'])->get();
                 break;
             case 4:
-                $level = Module::withCount(['beneficiaries' => function($q) use ($start, $end) {
-                    $q->where('valid', true)
-                        ->whereBetween('created_at', [$start, $end]);
+                $level = Module::withCount(['beneficiaries' => function($q) {
+                    $q->where('valid', true);
                 }])->where('location_id', $this->data["location_id"])->get();
                 break;
             default:
-                $level = Region::withCount(['beneficiaries' => function($q) use ($end, $start) {
-                    $q->where('valid', true)
-                        ->whereBetween('created_at', [$start, $end]);
+                $level = Region::withCount(['beneficiaries' => function($q) {
+                    $q->where('valid', true);
                 }])->where('country_id', 1)->get();
         }
         return $level;

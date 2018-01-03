@@ -339,35 +339,35 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label">Date Range</label>
-                                        <div>
-                                            <div class="row">
-                                                <div class="input-group col-lg-12" >
-                                                    <input required type="text" data-date-type="report" class="form-control">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
-                                                        </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{--<div class="form-group">--}}
+                                        {{--<label class="control-label">Date Range</label>--}}
+                                        {{--<div>--}}
+                                            {{--<div class="row">--}}
+                                                {{--<div class="input-group col-lg-12" >--}}
+                                                    {{--<input required type="text" data-date-type="report" class="form-control">--}}
+                                                        {{--<span class="input-group-btn">--}}
+                                                            {{--<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>--}}
+                                                        {{--</span>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
 
-                                    <div class="form-group">
-                                        <label class="control-label">Date Type</label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <input required type="radio" name="date_type" id="employmentDate"
-                                                       value="employment_date" v-model="dateType">
-                                                <label>Employment Date</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input required type="radio" name="date_type" id="registrationDate"
-                                                        value="registration_date" v-model="dateType">
-                                                <label >Registration Date</label>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{--<div class="form-group">--}}
+                                        {{--<label class="control-label">Date Type</label>--}}
+                                        {{--<div class="row">--}}
+                                            {{--<div class="col-md-6">--}}
+                                                {{--<input required type="radio" name="date_type" id="employmentDate"--}}
+                                                       {{--value="employment_date" v-model="dateType">--}}
+                                                {{--<label>Employment Date</label>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="col-md-6">--}}
+                                                {{--<input required type="radio" name="date_type" id="registrationDate"--}}
+                                                        {{--value="registration_date" v-model="dateType">--}}
+                                                {{--<label >Registration Date</label>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
 
                                     <div class="form-group">
                                         <label class="control-label">File Format</label>

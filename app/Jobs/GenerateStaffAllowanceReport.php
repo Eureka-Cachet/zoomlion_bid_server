@@ -7,6 +7,7 @@ use clocking\Country;
 use clocking\District;
 use clocking\Events\FormsDataGenerationFailed;
 use clocking\Location;
+use clocking\Module;
 use clocking\Region;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -64,7 +65,7 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
         return [
             'title' => $this->get_title(),
             'payload' => $beneficiaries,
-            'level_name' => $this->get_level()->name,
+            'level_name' => $this->getLevelName(),
             'level_type' => $this->get_level_type()
         ];
     }
@@ -87,7 +88,7 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
                 return [
                     "name" => $beneficiary->full_name,
                     "bid" => $beneficiary->bid,
-                    "rank" => $beneficiary->rank ? $beneficiary->rank->name : "Not Available",
+                    "rank" => $beneficiary->rank ? $beneficiary->rank->name : "-",
 //                    "module" => $beneficiary->module ? $beneficiary->module->department->name : "Not Available",
 //                    "location" => $beneficiary->location ? $beneficiary->location->name : "Not Available",
                     "bank" => $beneficiary->bank_name,
@@ -109,15 +110,25 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
     {
         switch ($this->data["level"]){
             case 1:
-                return Country::with('beneficiaries')->find(1);
+                return Country::with(['beneficiaries'=>function($q){
+                    $q->where(['valid' => true, 'active' => true]);
+                }])->find(1);
             case 2:
-                return Region::with('beneficiaries')->find($this->data['region_id']);
+                return Region::with(['beneficiaries'=>function($q){
+                    $q->where(['valid' => true, 'active' => true]);
+                }])->find($this->data['region_id']);
             case 3:
-                return District::with('beneficiaries')->find($this->data['district_id']);
+                return District::with(['beneficiaries'=>function($q){
+                    $q->where(['valid' => true, 'active' => true]);
+                }])->find($this->data['district_id']);
             case 4:
-                return Location::with('beneficiaries')->find($this->data["location_id"]);
+                return Location::with(['beneficiaries'=>function($q){
+                    $q->where(['valid' => true, 'active' => true]);
+                }])->find($this->data["location_id"]);
             default:
-                return Country::with('beneficiaries')->find(1);
+                return Country::with(['beneficiaries'=>function($q){
+                    $q->where(['valid' => true, 'active' => true]);
+                }])->find(1);
         }
     }
 
@@ -138,10 +149,45 @@ class GenerateStaffAllowanceReport extends Job implements ShouldQueue
     }
 
     /**
+     * @return string $name
+     */
+    private function getLevelName()
+    {
+        switch ($this->data["level"]){
+            case 1:
+                return Country::first()->name;
+            case 2:
+                return Region::find($this->data['region_id'])->name;
+            case 3:
+                return District::find($this->data['district_id'])->name;
+            case 4:
+                return Location::find($this->data['location_id'])->name;
+            default:
+                return Country::first()->name;
+        }
+    }
+
+    /**
      * @return string
      */
     private function get_level_type()
     {
-        return class_basename($this->get_level());
+        return class_basename($this->get_sub_level());
+    }
+
+    private function get_sub_level()
+    {
+        switch ($this->data["level"]){
+            case 1:
+                return new Region();
+            case 2:
+                return new District();
+            case 3:
+                return new Location();
+            case 4:
+                return new Module();
+            default:
+                return new Region();
+        }
     }
 }
