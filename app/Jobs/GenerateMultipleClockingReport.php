@@ -168,7 +168,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
      */
     private function get_device_id(Beneficiary $beneficiary)
     {
-        if(collect($beneficiary->attendances)->isEmpty()) return "-";
+        if(collect($beneficiary->attendances)->isEmpty()) return 0;
         return $beneficiary->attendances->first()->device->code;
     }
 
@@ -178,7 +178,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
      */
     private function get_total_clocks(Beneficiary $beneficiary)
     {
-        if(collect($beneficiary->attendances)->isEmpty()) return "-";
+        if(collect($beneficiary->attendances)->isEmpty()) return 0;
 
         $start = Carbon::parse($this->data["start"]);
         $end = Carbon::parse($this->data["end"]);
