@@ -23,7 +23,7 @@
 
         <div style="height: 5%">
             <img class="pull-right"  width="50" src="{!! $zoom_logo !!}">
-            <!--<span style="color: #29166f; margin-left: 150px;">BENEIFICAIRIES MANAGEMENT SYSTEM</span>-->
+            <!--<span style="color: #29166f; margin-left: 150px;">BENEFICIARIES MANAGEMENT SYSTEM</span>-->
             <h4 style="display: inline; color: #29166f;"><b>BID : {{ strtoupper($form['code']) }}</b></h4>
             <hr>
         </div>

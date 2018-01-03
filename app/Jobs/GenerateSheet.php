@@ -2,6 +2,7 @@
 
 namespace clocking\Jobs;
 
+use clocking\Events\FormsDataGenerationFailed;
 use clocking\Events\PushDataToClients;
 use Eureka\Helpers\ChannelMaker;
 use Eureka\Helpers\CodeGenerator;
@@ -63,8 +64,8 @@ class GenerateSheet extends Job implements ShouldQueue
             })->store('xls', $this->get_folder(), true);
             event(new PushDataToClients($this->get_push_data($path), $this->get_channel(), $this->get_event()));
         } catch (\Exception $e){
-            dd($e->getMessage());
-            throw $e;
+            var_dump($e->getMessage(), $e->getFile(), $e->getLine());
+            event(new FormsDataGenerationFailed($this->generator, "Operation Failed"));
         }
     }
 

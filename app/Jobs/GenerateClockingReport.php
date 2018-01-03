@@ -130,8 +130,12 @@ class GenerateClockingReport extends Job implements ShouldQueue
                 return [
                     'date' => $day[0]['date'],
                     'clock_in' => $day[0]['time'],
-                    'clock_out' => array_key_exists(1, $day) ? $day[1]['time'] : "N/A",
-                    'duration' => array_key_exists(1, $day) ? $this->get_duration($day[0]['time_t'], $day[1]['time_t']) : "N/A"
+                    'clock_out' => array_key_exists(1, $day)
+                        ? $day[1]['time']
+                        : "-",
+                    'duration' => array_key_exists(1, $day)
+                        ? $this->get_duration($day[0]['time_t'], $day[1]['time_t'])
+                        : "-"
                 ];
             })
         ;

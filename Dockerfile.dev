@@ -20,7 +20,7 @@ WORKDIR     /var/www
 
 #RUN         vendor/bin/phpunit
 
-#RUN         chown -R www-data ./storage && chmod -R 0770 ./storage
+#RUN         chown -R www-data storage && chmod -R 0770 storage
 #RUN         touch storage/logs/worker.log storage/logs/broadcast-worker.log
 
 # set container entrypoints

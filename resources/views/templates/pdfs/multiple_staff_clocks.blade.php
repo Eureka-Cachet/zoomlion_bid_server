@@ -22,7 +22,7 @@
 @section('body-content')
     <body>
     <img class="pull-right" style="display: inline;" width="50" src="{!! $zoom_logo !!}">
-    <span style="color: #29166f; margin-left: 150px;">BENEIFICAIRIES MANAGEMENT SYSTEM</span>
+    <span style="color: #29166f; margin-left: 150px;">BENEFICIARIES MANAGEMENT SYSTEM</span>
     <hr>
 
     <div style="text-align: center;">
@@ -40,7 +40,7 @@
     <div style="width: 100%;">
         <table class="table table-bordered" style="width: 100%; margin-bottom: 20px;">
             <thead>
-            <tr style="background-color: lightslategray; color: white;">
+            <tr style="background-color: lightslategray; color: white; font-size: 1em;">
                 <th style="
                                             padding: 8px;
                                             line-height: 1.42857143;
@@ -88,20 +88,12 @@
                                             border-top: 1px solid #dddddd;
                                             vertical-align: bottom;
 
-                                        ">DEVICE ID</th>
-                <th style="
-                                            padding: 8px;
-                                            line-height: 1.42857143;
-                                            vertical-align: top;
-                                            border-top: 1px solid #dddddd;
-                                            vertical-align: bottom;
-
                                         ">CLOCKS</th>
             </tr>
             </thead>
             <tbody>
         @foreach($payload as $b)
-            <tr>
+            <tr style="font-size: .9em;">
                     <td style="
                                                     padding: 8px;
                                                     line-height: 1.42857143;
@@ -138,13 +130,6 @@
                                                     border-top: 1px solid #dddddd;
                                                     text-align: center;
                                                 ">{{ $b["location"] }}</td>
-                    <td style="
-                                                    padding: 8px;
-                                                    line-height: 1.42857143;
-                                                    vertical-align: top;
-                                                    border-top: 1px solid #dddddd;
-                                                    text-align: center;
-                                                ">{{ $b["device_id"] }}</td>
                     <td style="
                                                     padding: 8px;
                                                     line-height: 1.42857143;

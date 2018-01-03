@@ -46,31 +46,53 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
     {
         try{
             $data = $this->prepare_data();
-
             if(is_null($data)) return event(new FormsDataGenerationFailed($this->generator, "Invalid Data"));
             if(collect($data)->isEmpty()) return event(new FormsDataGenerationFailed($this->generator, "No Data Available"));
-//            dd($data);
             $this->generate_report($data);
         }catch (\Exception $e){
-            dd($e->getMessage());
+            dump($e->getMessage(), $e->getFile(), $e->getLine());
             event(new FormsDataGenerationFailed($this->generator, "Invalid Data"));
         }
     }
 
     private function get_level()
     {
+        $level = null;
+        $start = Carbon::parse($this->data['start']);
+        $end = Carbon::parse($this->data['end']);
+
         switch ($this->data["level"]){
             case 1:
-                return Country::with('beneficiaries')->find(1);
+                $level = Region::withCount(['beneficiaries' => function($q) use ($end, $start) {
+                    $q->where('valid', true)
+                        ->whereBetween('created_at', [$start, $end]);
+                }])->where('country_id', 1)->get();
+                break;
             case 2:
-                return Region::with('beneficiaries')->find($this->data['region_id']);
+                $level = District::withCount(['beneficiaries' => function($q) use($start, $end){
+                    $q->where('valid', true)
+                    ->whereBetween('created_at', [$start, $end]);
+                }])->where('region_id', $this->data['region_id'])->get();
+                break;
             case 3:
-                return District::with('beneficiaries')->find($this->data['district_id']);
+                $level = Location::withCount(['beneficiaries' => function($q) use ($end, $start) {
+                    $q->where('valid', true)
+                        ->whereBetween('created_at', [$start, $end]);
+                }])->where('district_id', $this->data['district_id'])->get();
+                break;
             case 4:
-                return Location::with('beneficiaries')->find($this->data["location_id"]);
+                $level = Module::withCount(['beneficiaries' => function($q) use ($start, $end) {
+                    $q->where('valid', true)
+                        ->whereBetween('created_at', [$start, $end]);
+                }])->where('location_id', $this->data["location_id"])->get();
+                break;
             default:
-                return Country::with('beneficiaries')->find(1);
+                $level = Region::withCount(['beneficiaries' => function($q) use ($end, $start) {
+                    $q->where('valid', true)
+                        ->whereBetween('created_at', [$start, $end]);
+                }])->where('country_id', 1)->get();
         }
+        return $level;
     }
 
     /**
@@ -78,42 +100,23 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
      */
     private function get_beneficiaries_count()
     {
-        $level = $this->get_level();
-
-        $sub_levels = [];
-
-        switch ($this->data["level"]){
-            case 1:
-                $sub_levels = $level->regions;
-                break;
-            case 2:
-                $sub_levels = $level->districts;
-                break;
-            case 3:
-                $sub_levels = $level->locations;
-                break;
-            case 4:
-                $sub_levels = $level->modules;
-                break;
-            default:
-                $sub_levels = $level->regions;
-        }
+        $sub_levels = $this->get_level();
 
         if(collect($sub_levels)->isEmpty()) return [];
 
         if(is_null($sub_levels)) return null;
 
-        $result = collect($sub_levels)->map(function($sl) use ($level) {
+        $result = collect($sub_levels)->map(function($sl) {
             if($this->data["level"] == 4){
                 return [
                     'name' => $sl->department->name,
-                    'total_staff' => $this->get_total_count($sl)
+                    'total_staff' => $sl->beneficiaries_count
                 ];
             }
 
             return [
                 'name' => $sl->name,
-                'total_staff' => $this->get_total_count($sl)
+                'total_staff' => $sl->beneficiaries_count
             ];
         });
 
@@ -146,7 +149,7 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
         return [
             'payload' => $beneficiaries_count,
             'all_total' => collect($beneficiaries_count)->sum('total_staff'),
-            'level_name' => $this->get_level()->name,
+            'level_name' => $this->getLevelName(),
             'level_type' => $this->get_level_type()
         ];
     }
@@ -206,6 +209,25 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
                 return new Module();
             default:
                 return new Region();
+        }
+    }
+
+    /**
+     * @return string $name
+     */
+    private function getLevelName()
+    {
+        switch ($this->data["level"]){
+            case 1:
+                return Country::first()->name;
+            case 2:
+                return Region::find($this->data['region_id'])->name;
+            case 3:
+                return District::find($this->data['district_id'])->name;
+            case 4:
+                return Location::find($this->data['location_id'])->name;
+            default:
+                return Country::first()->name;
         }
     }
 }

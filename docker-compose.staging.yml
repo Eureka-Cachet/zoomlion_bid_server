@@ -3,7 +3,7 @@
  services: 
     
     clocking-app:
-      image: eurekacachet/zoomlion_bid:dev
+      image: eurekacachet/zoomlion_bid
       volumes:
         - .:/var/www
       depends_on:
@@ -16,7 +16,6 @@
         - clocking-redis
       ports:
         - 9000:9000
-      privileged: true
       networks:
         - clockingapp-network
 
@@ -33,7 +32,7 @@
         - clockingapp-network
 
     clocking-nginx:
-      image: eurekacachet/zoomlion_bid_nginx_staging:dev
+      image: eurekacachet/zoomlion_bid_nginx_staging
       depends_on:
         - clocking-app
         - clocking-socket

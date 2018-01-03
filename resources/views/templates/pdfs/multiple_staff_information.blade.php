@@ -25,7 +25,7 @@
 
     <body style="font-size: .8em;">
         <img class="pull-right" style="display: inline;" width="50" src="{!! $zoom_logo !!}">
-        <span style="color: #29166f; margin-left: 150px;">BENEIFICAIRIES MANAGEMENT SYSTEM</span>
+        <span style="color: #29166f; margin-left: 150px;">BENEFICIARIES MANAGEMENT SYSTEM</span>
         <hr>
 
         <div style="text-align: center;">
@@ -43,11 +43,11 @@
 
                 <?php $i ++; ?>
 
-                <table class="table table-bordered" style="width: 100%; margin-bottom: 40px;">
+                <table class="table table-bordered" style="width: 100%; margin-bottom: 5px;">
                     <thead>
-                        <tr style="background-color: lightslategray; color: white; font-size: 1.1em;">
+                        <tr style="background-color: lightslategray; color: white; font-size: 1em;">
                             <th style="
-                                                padding: 8px;
+                                                padding: 4px;
                                                 line-height: 1.42857143;
                                                 vertical-align: top;
                                                 border-top: 1px solid #dddddd;
@@ -55,7 +55,7 @@
 
                                             ">REGION</th>
                             <th style="
-                                                padding: 8px;
+                                                padding: 4px;
                                                 line-height: 1.42857143;
                                                 vertical-align: top;
                                                 border-top: 1px solid #dddddd;
@@ -63,7 +63,7 @@
 
                                             ">DISTRICT</th>
                             <th style="
-                                                padding: 8px;
+                                                padding: 4px;
                                                 line-height: 1.42857143;
                                                 vertical-align: top;
                                                 border-top: 1px solid #dddddd;
@@ -98,9 +98,12 @@
                     </tr>
                     <tr>
                         <td style="text-align: center;">
-                            <img width="100" src="{{ $staff["encoded"] }}">
+                            <?php $beneficiary = clocking\Beneficiary::with('picture')->find($staff["id"]); ?>
+                            <img width="100" src="{{ $beneficiary->picture
+                            ? "data:image/jpg;base64," . $beneficiary->picture->encoded
+                            : $zoom_logo}}">
                         </td>
-                        <td colspan="2" style="padding: 10px; font-size: 1.1em;">
+                        <td colspan="2" style="padding: 5px; font-size: .9em;">
                             <p><b>BID : </b>{!! $staff['bid'] !!}</p>
                             <p><b>Staff Name :</b> {!! $staff['full_name'] !!}</p>
                             <p><b>Phone Number :</b> {!! $staff['phone_number'] !!}</p>
@@ -113,7 +116,7 @@
                     </tr>
                     </tbody>
                 </table>
-                @if($i % 2 == 0 )
+                @if($i % 3 == 0 )
                     <div class="page-break"></div>
                 @endif
             @endforeach

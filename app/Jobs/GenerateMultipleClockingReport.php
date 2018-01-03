@@ -94,9 +94,9 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
                 return [
                     "name" => $beneficiary->full_name,
                     "bid" => $beneficiary->bid,
-                    "rank" => $beneficiary->rank ? $beneficiary->rank->name : "Not Available",
-                    "module" => $beneficiary->module ? $beneficiary->module->department->name : "Not Available",
-                    "location" => $beneficiary->location ? $beneficiary->location->name : "Not Available",
+                    "rank" => $beneficiary->rank ? $beneficiary->rank->name : "-",
+                    "module" => $beneficiary->module ? $beneficiary->module->department->name : "-",
+                    "location" => $beneficiary->location ? $beneficiary->location->name : "-",
                     "device_id" => $this->get_device_id($beneficiary),
                     "clocks" => $this->get_total_clocks($beneficiary)
                 ];
@@ -158,7 +158,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
      */
     private function get_device_id(Beneficiary $beneficiary)
     {
-        if(collect($beneficiary->attendances)->isEmpty()) return "Not Available";
+        if(collect($beneficiary->attendances)->isEmpty()) return "-";
         return $beneficiary->attendances->first()->device->code;
     }
 
@@ -168,7 +168,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
      */
     private function get_total_clocks(Beneficiary $beneficiary)
     {
-        if(collect($beneficiary->attendances)->isEmpty()) return "Not Available";
+        if(collect($beneficiary->attendances)->isEmpty()) return "-";
 
         $start = Carbon::parse($this->data["start"]);
         $end = Carbon::parse($this->data["end"]);

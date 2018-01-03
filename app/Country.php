@@ -18,11 +18,22 @@ class Country extends Model
 
     public function beneficiaries()
     {
-        return $this->hasManyThrough(Beneficiary::class, Region::class);
+        return $this->hasManyThrough(
+            Beneficiary::class,
+            Region::class,
+            "country_id",
+            "region_id",
+            "id"
+        );
     }
 
     public function forms()
     {
-        return $this->hasManyThrough(Form::class, Region::class, 'country_id', 'region_id', 'id');
+        return $this->hasManyThrough(
+            Form::class,
+            Region::class,
+            'country_id',
+            'region_id',
+            'id');
     }
 }

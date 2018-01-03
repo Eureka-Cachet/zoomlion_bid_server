@@ -22,7 +22,7 @@
 
     <body>
     <img class="pull-right" style="display: inline;" width="50" src="{!! $zoom_logo !!}">
-    <span style="color: #29166f; margin-left: 150px;">BENEIFICAIRIES MANAGEMENT SYSTEM</span>
+    <span style="color: #29166f; margin-left: 150px;">BENEFICIARIES MANAGEMENT SYSTEM</span>
     <hr>
 
     <div style="text-align: center;">

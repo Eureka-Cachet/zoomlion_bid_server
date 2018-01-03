@@ -2,18 +2,18 @@
 
 namespace clocking\Jobs;
 
+
 use Barryvdh\DomPDF\PDF;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use clocking\Beneficiary;
 use clocking\Events\FormsDataGenerationFailed;
 use clocking\Events\PushDataToClients;
-use clocking\Jobs\Job;
-use clocking\Picture;
 use clocking\SysImages;
 use Eureka\Helpers\ChannelMaker;
 use Eureka\Helpers\CodeGenerator;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class GeneratePdf extends Job implements ShouldQueue
 {
@@ -59,9 +59,7 @@ class GeneratePdf extends Job implements ShouldQueue
 
     /**
      * Execute the job.
-     *
      * @param PDF $PDF
-     * @throws \Exception
      */
     public function handle(PDF $PDF)
     {
@@ -69,12 +67,11 @@ class GeneratePdf extends Job implements ShouldQueue
             $uuid = CodeGenerator::uuid();
             $file_path = $this->get_file_path($uuid);
             $data = $this->prepare_data();
-//            dd($data);
-            $PDF->loadView($this->template_path, $data)
+            SnappyPdf::loadView($this->template_path, $data)
                 ->save($file_path);
             event(new PushDataToClients($this->get_push_data($uuid), $this->get_channel(), $this->get_event()));
         } catch (\Exception $e){
-            var_dump($e->getMessage());
+            var_dump($e->getMessage(), $e->getFile(), $e->getLine());
             event(new FormsDataGenerationFailed($this->generator, "Operation Failed"));
         }
     }
@@ -112,9 +109,9 @@ class GeneratePdf extends Job implements ShouldQueue
      */
     private function prepare_data()
     {
-        if($this->details){
-            $this->data['payload'] = $this->get_images();
-        }
+//        if($this->details){
+//            $this->data['payload'] = $this->get_images();
+//        }
 
         if($this->template_path == 'templates.pdfs.staff_information'){
             $value = $this->data['payload'];
