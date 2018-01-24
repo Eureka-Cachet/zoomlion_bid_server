@@ -6,17 +6,17 @@
         @include('partials._breadcrumb', ["active" => "Attendance"])
         <!-- //breadcrumb-->
 
-        @include('partials.departments._modals');
+        @include('partials.departments._modals')
 
 
         <div id="content">
 
             @if(collect([1, 7])->contains(auth()->user()->roles->first()->id))
-                @include('partials.departments._top_bar');
+                @include('partials.departments._top_bar')
             @endif
 
             @if(collect([2])->contains(auth()->user()->roles->first()->id))
-                @include('partials.departments._top_bar_mini');
+                @include('partials.departments._top_bar_mini')
             @endif
 
             <div class="row">
@@ -60,7 +60,7 @@
 
     </div>
 
-    @include('partials.departments._tables');
+    @include('partials.departments._tables')
     
 @endsection
 

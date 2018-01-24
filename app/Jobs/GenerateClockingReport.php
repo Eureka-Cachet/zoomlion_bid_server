@@ -82,6 +82,7 @@ class GenerateClockingReport extends Job implements ShouldQueue
     private function prepare_data()
     {
         $clocking = $this->get_clocking();
+        dd($clocking);
         if(is_null($clocking)) return null;
 
         if(collect($clocking)->isEmpty()) return [];
@@ -132,9 +133,6 @@ class GenerateClockingReport extends Job implements ShouldQueue
                     'clock_in' => $day[0]['time'],
                     'clock_out' => array_key_exists(1, $day)
                         ? $day[1]['time']
-                        : "-",
-                    'duration' => array_key_exists(1, $day)
-                        ? $this->get_duration($day[0]['time_t'], $day[1]['time_t'])
                         : "-"
                 ];
             })

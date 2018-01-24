@@ -80,7 +80,6 @@
                             <input v-model="newUser.pin"
                                    required type="text" class="form-control"
                                    name="pin">
-                            <span class="help-block"><a style="color: #29166f" href="#">eg: mm/dd/yyyy</a> <i style="color: #29166f" class="fa fa-info"></i></span>
                         </div>
                     </div>
                 </div>
@@ -219,17 +218,10 @@
                 },
                 {
                     title: 'Role',
-                    name: 'role.name',
+                    name: 'roles',
                     sortField: 'role_id',
                     dataClass: 'text-center',
                     callback: 'allCap'
-                },
-                {
-                    title: 'Date of birth',
-                    name: 'date_of_birth',
-                    sortField: 'date_of_birth',
-                    callback: 'formatDate',
-                    dataClass: 'text-center'
                 },
                 {
                     title: 'Actions',
@@ -418,28 +410,9 @@
                         }
                     },
                     allCap: function(value) {
-                        var formatted = value;
-                        switch (value){
-                            case "SYSADMIN":
-                                formatted = "<span class='label'>" + _.upperCase(value) + "</span>";
-                                break;
-                            case "OPERATION":
-                                formatted = "<span class='label label-success'>" + _.upperCase(value) + "</span>";
-                                break;
-                            case "AUDIT":
-                                formatted = "<span class='label label-warning'>" + _.upperCase(value) + "</span>";
-                                break;
-                            case "ACCOUNT":
-                                formatted = "<span class='label label-info'>" + _.upperCase(value) + "</span>";
-                                break;
-                            case "IT":
-                                formatted = "<span class='label label-default'>" + _.upperCase(value) + "</span>";
-                                break;
-                            case "SUPERVISOR":
-                                formatted = "<span class='label label-danger'>" + _.upperCase(value) + "</span>";
-                                break;
-                        }
-                        return formatted;
+                        var roles = value.map(function(role){return role.name}).join(" ");
+                        console.log(roles);
+                        return "<span class='label label-success'>" + _.upperCase(roles) + "</span>";
                     },
                     formatDate: function(value, fmt) {
                         if (value == null) return '';

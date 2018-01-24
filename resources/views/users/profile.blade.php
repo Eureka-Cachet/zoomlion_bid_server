@@ -63,6 +63,18 @@
                                     </div>
                                 </div>
 
+                                @if($user->roles->first()->id == \Eureka\Helpers\Constants::SUPERVISOR_ROLE
+                                OR $user->roles->first()->id == \Eureka\Helpers\Constants::OPERATION_ROLE)
+                                    <div class="form-group">
+                                        <label class="control-label">PIN</label>
+                                        <div>
+                                            <p class="form-control-static">
+                                                {!! $user->pin !!}
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div class="divider"></div>
                                 @if(auth()->user()->id == $user->id)
                                     <div class="form-group">
