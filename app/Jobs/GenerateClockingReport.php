@@ -12,6 +12,7 @@ use clocking\Region;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 use League\Fractal\Manager;
 
 class GenerateClockingReport extends Job implements ShouldQueue
@@ -82,12 +83,9 @@ class GenerateClockingReport extends Job implements ShouldQueue
     private function prepare_data()
     {
         $clocking = $this->get_clocking();
-        dd($clocking);
         if(is_null($clocking)) return null;
 
         if(collect($clocking)->isEmpty()) return [];
-
-//        dd($clocking);
 
         return [
             "title" => $this->get_title(),
@@ -99,7 +97,7 @@ class GenerateClockingReport extends Job implements ShouldQueue
     }
 
     /**
-     * @return
+     * @return mixed|null
      */
     private function get_clocking()
     {
@@ -110,35 +108,43 @@ class GenerateClockingReport extends Job implements ShouldQueue
 
         if( !$beneficiary) return null;
 
+        return $this->getBeneficiaryClocking($beneficiary, $start, $end);
+    }
 
-        $attendances = $beneficiary->attendances;
-        $clocking = $attendances
-            ->filter(function($clock) use ($start, $end) {
-                return Carbon::parse($clock->date)->between($start, $end);
-            });
-        $mapped = $clocking->map(function($clock){
+    /**
+     * @param Beneficiary $beneficiary
+     * @param $startDate
+     * @param $endDate
+     * @return mixed
+     */
+    private function getBeneficiaryClocking(Beneficiary $beneficiary, $startDate, $endDate)
+    {
+        return $beneficiary
+            ->attendances()
+            ->where('date', '>=', $startDate)
+            ->where('date', '<=', $endDate)
+            ->get()
+            ->groupBy('date')
+            ->map(function(Collection $attendances, $date){
+                $in = $attendances->shift();
+                $inTime = $in
+                    ? $in->time
+                    : null;
+                $out = $attendances->pop();
+                $outTime = $out
+                    ? $out->time
+                    : null;
                 return [
-                    'date' => Carbon::parse($clock->date)->toFormattedDateString(),
-                    'day' => Carbon::parse($clock->date)->dayOfYear,
-                    'time' => Carbon::parse($clock->time)->toTimeString(),
-                    'time_t' => $clock->time,
-                    'clock_in' => $this->get_clock_in($clock),
-                    'device' => $clock->device->code
-                ];
-            })
-            ->groupBy('date')->values()
-            ->map(function($day){
-                return [
-                    'date' => $day[0]['date'],
-                    'clock_in' => $day[0]['time'],
-                    'clock_out' => array_key_exists(1, $day)
-                        ? $day[1]['time']
+                    'date' => Carbon::parse($date)->toFormattedDateString(),
+                    'clock_in' => $inTime
+                        ? Carbon::parse($inTime)->toTimeString()
+                        : "-",
+                    'clock_out' => $outTime
+                        ? Carbon::parse($outTime)->toTimeString()
                         : "-"
                 ];
             })
-        ;
-//        dd($mapped);
-        return $mapped;
+            ->toArray();
     }
 
     /**
