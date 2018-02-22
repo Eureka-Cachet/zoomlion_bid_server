@@ -57,31 +57,36 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
 
     private function get_level()
     {
+        $gender = $this->data['gender'];
+        $constraints = ['active' => true];
+        $constraints = $gender != 2
+            ? array_add($constraints, 'gender', $gender)
+            : $constraints;
         $level = null;
         switch ($this->data["level"]){
             case 1:
-                $level = Region::withCount(['beneficiaries' => function($q) {
-                    $q->where('valid', true);
+                $level = Region::withCount(['beneficiaries' => function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->where('country_id', 1)->get();
                 break;
             case 2:
-                $level = District::withCount(['beneficiaries' => function($q) {
-                    $q->where('valid', true);
+                $level = District::withCount(['beneficiaries' => function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->where('region_id', $this->data['region_id'])->get();
                 break;
             case 3:
-                $level = Location::withCount(['beneficiaries' => function($q) {
-                    $q->where('valid', true);
+                $level = Location::withCount(['beneficiaries' => function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->where('district_id', $this->data['district_id'])->get();
                 break;
             case 4:
-                $level = Module::withCount(['beneficiaries' => function($q) {
-                    $q->where('valid', true);
+                $level = Module::withCount(['beneficiaries' => function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->where('location_id', $this->data["location_id"])->get();
                 break;
             default:
-                $level = Region::withCount(['beneficiaries' => function($q) {
-                    $q->where('valid', true);
+                $level = Region::withCount(['beneficiaries' => function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->where('country_id', 1)->get();
         }
         return $level;

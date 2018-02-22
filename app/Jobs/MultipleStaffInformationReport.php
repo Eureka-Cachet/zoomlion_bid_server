@@ -62,26 +62,31 @@ class MultipleStaffInformationReport extends Job implements ShouldQueue
 
     private function get_level()
     {
+        $gender = $this->data['gender'];
+        $constraints = ['active' => true];
+        $constraints = $gender != 2
+            ? array_add($constraints, 'gender', $gender)
+            : $constraints;
         switch ($this->data["level"]){
             case 1:
-                return Country::with(['beneficiaries'=>function($q){
-                    $q->where('valid', true);
+                return Country::with(['beneficiaries'=>function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->find(1);
             case 2:
-                return Region::with(['beneficiaries'=>function($q){
-                    $q->where('valid', true);
+                return Region::with(['beneficiaries'=>function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->find($this->data['region_id']);
             case 3:
-                return District::with(['beneficiaries'=>function($q){
-                    $q->where('valid', true);
+                return District::with(['beneficiaries'=>function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->find($this->data['district_id']);
             case 4:
-                return Location::with(['beneficiaries'=>function($q){
-                    $q->where('valid', true);
+                return Location::with(['beneficiaries'=>function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->find($this->data["location_id"]);
             default:
-                return Country::with(['beneficiaries'=>function($q){
-                    $q->where('valid', true);
+                return Country::with(['beneficiaries'=>function($q) use ($constraints) {
+                    $q->where($constraints);
                 }])->find(1);
         }
     }

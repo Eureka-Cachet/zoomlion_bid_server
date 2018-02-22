@@ -66,6 +66,24 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label class="control-label">Gender</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="male" v-model="gender" value="2" name="gender" checked>
+                                                <label>Any</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="male" v-model="gender" value="1" name="gender" checked>
+                                                <label>Male</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="female" v-model="gender" value="0" name="gender" >
+                                                <label>Female</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label class="control-label">File Format</label>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -258,6 +276,24 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label class="control-label">Gender</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="male" v-model="gender" value="2" name="gender" checked>
+                                                <label>Any</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="male" v-model="gender" value="1" name="gender" checked>
+                                                <label>Male</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="female" v-model="gender" value="0" name="gender" >
+                                                <label>Female</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label class="control-label">File Format</label>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -339,46 +375,34 @@
                                         </div>
                                     </div>
 
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="control-label">Date Range</label>--}}
-                                        {{--<div>--}}
-                                            {{--<div class="row">--}}
-                                                {{--<div class="input-group col-lg-12" >--}}
-                                                    {{--<input required type="text" data-date-type="report" class="form-control">--}}
-                                                        {{--<span class="input-group-btn">--}}
-                                                            {{--<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>--}}
-                                                        {{--</span>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-
-                                    {{--<div class="form-group">--}}
-                                        {{--<label class="control-label">Date Type</label>--}}
-                                        {{--<div class="row">--}}
-                                            {{--<div class="col-md-6">--}}
-                                                {{--<input required type="radio" name="date_type" id="employmentDate"--}}
-                                                       {{--value="employment_date" v-model="dateType">--}}
-                                                {{--<label>Employment Date</label>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="col-md-6">--}}
-                                                {{--<input required type="radio" name="date_type" id="registrationDate"--}}
-                                                        {{--value="registration_date" v-model="dateType">--}}
-                                                {{--<label >Registration Date</label>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
+                                    <div class="form-group">
+                                        <label class="control-label">Gender</label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="male" v-model="gender" value="2" name="gender" checked>
+                                                <label>Any</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="male" v-model="gender" value="1" name="gender" checked>
+                                                <label>Male</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input required type="radio" id="female" v-model="gender" value="0" name="gender" >
+                                                <label>Female</label>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
                                         <label class="control-label">File Format</label>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <input required type="radio" id="xlsx" value="xlsx" v-model="fileFormat" name="file_format">
-                                                <label>XLSX</label>
+                                                <label for="xlsx">XLSX</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <input required  type="radio" id="pdf" value="pdf" v-model="fileFormat" name="file_format" checked>
-                                                <label>PDF</label>
+                                                <label for="pdf">PDF</label>
                                             </div>
                                         </div>
                                     </div>
@@ -433,20 +457,6 @@
                                                     </div>
                                                 </div>
 
-                                                <!--<div class="form-group">
-                                                    <label class="control-label">File Format</label>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <input required disabled type="radio" id="xlsx" value="xlsx" v-model="fileFormat" name="file_format">
-                                                            <label>XLSX</label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <input required disabled type="radio" id="pdf" value="pdf" v-model="fileFormat" name="file_format" checked>
-                                                            <label>PDF</label>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-
                                                 <div class="form-group offset">
                                                     <div>
                                                         <button style="background: #29166f; color: #fff; border-color: #29166f;" type="submit" class="btn btn-theme btn-block">
@@ -496,19 +506,23 @@
                                                     </div>
                                                 </div>
 
-                                                <!--<div class="form-group">
-                                                    <label class="control-label">File Format</label>
+                                                <div class="form-group">
+                                                    <label class="control-label">Gender</label>
                                                     <div class="row">
-                                                        <div class="col-md-6">
-                                                            <input required disabled type="radio" id="xlsx" value="xlsx" v-model="fileFormat" name="file_format">
-                                                            <label>XLSX</label>
+                                                        <div class="col-md-4">
+                                                            <input required type="radio" id="male" v-model="gender" value="2" name="gender" checked>
+                                                            <label>Any</label>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <input required disabled type="radio" id="pdf" value="pdf" v-model="fileFormat" name="file_format" checked>
-                                                            <label>PDF</label>
+                                                        <div class="col-md-4">
+                                                            <input required type="radio" id="male" v-model="gender" value="1" name="gender" checked>
+                                                            <label>Male</label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input required type="radio" id="female" v-model="gender" value="0" name="gender" >
+                                                            <label>Female</label>
                                                         </div>
                                                     </div>
-                                                </div>-->
+                                                </div>
 
                                                 <div class="form-group offset">
                                                     <div>
@@ -651,6 +665,24 @@
                                                             <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
                                                         </span>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">Gender</label>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <input required type="radio" id="male" v-model="gender" value="2" name="gender" checked>
+                                                            <label>Any</label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input required type="radio" id="male" value="1" v-model="gender" name="gender" checked>
+                                                            <label>Male</label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <input required type="radio" id="female" value="0" v-model="gender" name="gender" >
+                                                            <label>Female</label>
                                                         </div>
                                                     </div>
                                                 </div>

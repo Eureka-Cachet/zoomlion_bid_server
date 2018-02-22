@@ -64,6 +64,7 @@
                     },
                     dateType: '',
                     fileFormat: 'pdf',
+                    gender: '2',
                     regions: [],
                     districts: [],
                     locations: [],
@@ -136,6 +137,7 @@
                         data.append('location_id', this.location);
                         data.append('module_id', this.module);
                         data.append('date_type', this.dateType);
+                        data.append('gender', Number.parseInt(this.gender));
                         data.append('format', this.fileFormat);
                         data.append('start', this.dateRange.start);
                         data.append('end', this.dateRange.end);

@@ -112,17 +112,28 @@ class GenerateStaffEnrolmentReport extends Job implements ShouldQueue
 
     private function get_level()
     {
+        $gender = $this->data['gender'];
         switch ($this->data["level"]){
             case 1:
-                return Country::with('beneficiaries')->find(1);
+                return Country::with(['beneficiaries' => function($q) use ($gender) {
+                    $gender != 2 ? $q->where('gender', $gender) : $q;
+                }])->find(1);
             case 2:
-                return Region::with('beneficiaries')->find($this->data['region_id']);
+                return Region::with(['beneficiaries' => function($q) use ($gender) {
+                    $gender != 2 ? $q->where('gender', $gender) : $q;
+                }])->find($this->data['region_id']);
             case 3:
-                return District::with('beneficiaries')->find($this->data['district_id']);
+                return District::with(['beneficiaries' => function($q) use ($gender) {
+                    $gender != 2 ? $q->where('gender', $gender) : $q;
+                }])->find($this->data['district_id']);
             case 4:
-                return Location::with('beneficiaries')->find($this->data["location_id"]);
+                return Location::with(['beneficiaries' => function($q) use ($gender) {
+                    $gender != 2 ? $q->where('gender', $gender) : $q;
+                }])->find($this->data["location_id"]);
             default:
-                return Country::with('beneficiaries')->find(1);
+                return Country::with(['beneficiaries' => function($q) use ($gender) {
+                    $gender != 2 ? $q->where('gender', $gender) : $q;
+                }])->find(1);
         }
     }
 
