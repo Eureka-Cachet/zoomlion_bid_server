@@ -687,19 +687,19 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label class="control-label">File Format</label>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <input required type="radio" id="xlsx" value="xlsx" v-model="fileFormat" name="format">
-                                                            <label>XLSX</label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <input required  type="radio" id="pdf" value="pdf" v-model="fileFormat" name="format" checked>
-                                                            <label>PDF</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {{--<div class="form-group">--}}
+                                                    {{--<label class="control-label">File Format</label>--}}
+                                                    {{--<div class="row">--}}
+                                                        {{--<div class="col-md-6">--}}
+                                                            {{--<input required type="radio" id="xlsx" value="xlsx" v-model="fileFormat" name="format">--}}
+                                                            {{--<label>XLSX</label>--}}
+                                                        {{--</div>--}}
+                                                        {{--<div class="col-md-6">--}}
+                                                            {{--<input required  type="radio" id="pdf" value="pdf" v-model="fileFormat" name="format" checked>--}}
+                                                            {{--<label>PDF</label>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
 
                                                 <div class="form-group offset">
                                                     <div>

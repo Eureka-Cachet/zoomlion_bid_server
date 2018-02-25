@@ -115,9 +115,9 @@ class GenerateClockingReport extends Job implements ShouldQueue
      * @param Beneficiary $beneficiary
      * @param $startDate
      * @param $endDate
-     * @return mixed
+     * @return array
      */
-    private function getBeneficiaryClocking(Beneficiary $beneficiary, $startDate, $endDate)
+    public static function getBeneficiaryClocking(Beneficiary $beneficiary, $startDate, $endDate)
     {
         return $beneficiary
             ->attendances()

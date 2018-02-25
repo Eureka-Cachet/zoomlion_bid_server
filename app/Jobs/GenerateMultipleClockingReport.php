@@ -65,7 +65,6 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
     private function prepare_data()
     {
         $clocking = $this->get_clocking();
-//        dd($clocking);
         if(collect($clocking)->isEmpty()) return [];
         return [
             'title' => $this->get_title(),
@@ -89,24 +88,25 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
     {
         $beneficiaries = $this->get_beneficiaries();
         if(collect($beneficiaries)->isEmpty()) return [];
-//        dd($beneficiaries);
         return collect($beneficiaries)
-            ->map(function($beneficiary){
+            ->map(function ($beneficiary) {
+                $clocks = $this->get_clocks_with_details($beneficiary);
                 return [
                     "name" => $beneficiary->full_name,
                     "bid" => $beneficiary->bid,
                     "rank" => $beneficiary->rank ? $beneficiary->rank->name : "-",
                     "module" => $beneficiary->module ? $beneficiary->module->department->name : "-",
                     "location" => $beneficiary->location ? $beneficiary->location->name : "-",
-                    "clocks" => $this->get_total_clocks($beneficiary)
+                    "clocks" => $clocks
                 ];
+            })->filter(function ($b) {
+                return count($b['clocks']) > 0;
             })->toArray();
     }
 
     private function get_beneficiaries()
     {
         $level = $this->get_level();
-//        dd($level->beneficiaries->count());
         return $level->beneficiaries;
     }
 
@@ -148,13 +148,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
      */
     private function generate_report($data)
     {
-        if($this->data["format"] == "xlsx"){
-            dispatch(new GenerateSheet($data, $this->get_template(), $this->get_title(), $this->generator));
-        }
-
-        if($this->data["format"] == "pdf"){
-            dispatch(new GeneratePdf($data, $this->get_template(), $this->get_title(), $this->generator));
-        }
+        dispatch(new GeneratePdf($data, $this->get_template(), $this->get_title(), $this->generator));
     }
 
     /**
@@ -162,10 +156,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
      */
     private function get_template()
     {
-        if($this->data["format"] == "pdf"){
-            return "templates.pdfs.multiple_staff_clocks";
-        }
-        return "templates.sheets.multiple_staff_clocks";
+        return "templates.pdfs.multiple_staff_attendance";
     }
 
     /**
@@ -176,6 +167,17 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
     {
         if(collect($beneficiary->attendances)->isEmpty()) return 0;
         return $beneficiary->attendances->first()->device->code;
+    }
+
+    /**
+     * @param Beneficiary $beneficiary
+     * @return array
+     */
+    private function get_clocks_with_details(Beneficiary $beneficiary)
+    {
+        $start = Carbon::parse($this->data["start"])->startOfDay();
+        $end = Carbon::parse($this->data["end"])->endOfDay();
+        return GenerateClockingReport::getBeneficiaryClocking($beneficiary, $start, $end);
     }
 
     /**
