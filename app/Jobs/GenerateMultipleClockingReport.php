@@ -68,6 +68,7 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
         if(collect($clocking)->isEmpty()) return [];
         return [
             'title' => $this->get_title(),
+            'gender' => $this->get_gender(),
             'payload' => $clocking,
             'level_name' => $this->getLevelName(),
             'level_type' => $this->get_level_type(),
@@ -238,5 +239,15 @@ class GenerateMultipleClockingReport extends Job implements ShouldQueue
             default:
                 return new Region();
         }
+    }
+
+    /**
+     * @return null|string
+     */
+    private function get_gender()
+    {
+        $gender = $this->data['gender'];
+        if($gender == 2) return null;
+        return $gender == 1 ? "Males" : "Females";
     }
 }

@@ -147,8 +147,19 @@ class GenerateStaffEnrolmentReport extends Job implements ShouldQueue
             'payload' => $enrolment_count,
             'all_total' => collect($enrolment_count)->sum('total_enrolment'),
             'level_name' => $this->get_level()->name,
-            'level_type' => $this->get_level_type()
+            'level_type' => $this->get_level_type(),
+            'gender' => $this->get_gender()
         ];
+    }
+
+    /**
+     * @return null|string
+     */
+    private function get_gender()
+    {
+        $gender = $this->data['gender'];
+        if($gender == 2) return null;
+        return $gender == 1 ? "Males" : "Females";
     }
 
     /**

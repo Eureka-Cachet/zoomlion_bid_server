@@ -22,7 +22,7 @@
 @section('body-content')
     <body style="size: 2480px 3508px; margin-left: 10px; margin-right: 10px;">
     <img class="pull-right" style="display: inline;" width="50" src="{!! $zoom_logo !!}">
-    <span style="color: #29166f; margin-left: 150px;">BENEIFICAIRIES MANAGEMENT SYSTEM</span>
+    <span style="color: #29166f; margin-left: 150px;">BENEFICIARIES MANAGEMENT SYSTEM</span>
     <hr>
 
     <div style="text-align: center;">
@@ -32,6 +32,9 @@
     <h4 style="text-align: center;">
         BENEFICIARIES ALLOWANCE
         FOR {{ strtoupper($level_name) }} {{ strtoupper($level_type) }}
+        @if($gender)
+            {{ "({$gender})" }}
+        @endif
     </h4>
 
 

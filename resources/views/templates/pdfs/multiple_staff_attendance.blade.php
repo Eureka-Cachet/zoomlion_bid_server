@@ -31,6 +31,9 @@
             FOR {{ strtoupper($level_name) }} {{ strtoupper($level_type) }}
             FROM {{ \Carbon\Carbon::parse($start)->toFormattedDateString() }}
             TO {{ \Carbon\Carbon::parse($end)->toFormattedDateString() }}
+            @if($gender)
+                {{ "({$gender})" }}
+            @endif
         </h4>
 
         <div style="width: 100%;">

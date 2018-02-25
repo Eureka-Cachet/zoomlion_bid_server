@@ -32,9 +32,12 @@
             <span style="color: #29166f;">REPORT</span>
         </div>
 
-        <h3 style="text-align: center; color: #29166f;">
+        <h4 style="text-align: center; color: #29166f;">
             STAFF INFORMATION FOR {{ strtoupper($level_name) }} {{ strtoupper($level_type) }}
-        </h3>
+            @if($gender)
+                {{ "({$gender})" }}
+            @endif
+        </h4>
 
         <?php $i = 0; ?>
 

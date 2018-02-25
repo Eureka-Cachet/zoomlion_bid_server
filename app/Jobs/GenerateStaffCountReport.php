@@ -147,9 +147,21 @@ class GenerateStaffCountReport extends Job implements ShouldQueue
             'payload' => $beneficiaries_count,
             'all_total' => collect($beneficiaries_count)->sum('total_staff'),
             'level_name' => $this->getLevelName(),
-            'level_type' => $this->get_level_type()
+            'level_type' => $this->get_level_type(),
+            'gender' => $this->get_gender()
         ];
     }
+
+    /**
+     * @return null|string
+     */
+    private function get_gender()
+    {
+        $gender = $this->data['gender'];
+        if($gender == 2) return null;
+        return $gender == 1 ? "Males" : "Females";
+    }
+
 
     private function generate_report($data)
     {
